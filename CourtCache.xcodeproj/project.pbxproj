@@ -22,6 +22,11 @@
 		D882274929FD5FCA00698EAE /* TeamsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D882274829FD5FCA00698EAE /* TeamsCollectionViewCell.swift */; };
 		D882274B29FD645600698EAE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D882274A29FD645600698EAE /* GoogleService-Info.plist */; };
 		D8CAE9A32A2254320029C9FD /* MulticasDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CAE9A22A2254320029C9FD /* MulticasDelegate.swift */; };
+		D8CAE9A52A22550C0029C9FD /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CAE9A42A22550C0029C9FD /* AuthViewController.swift */; };
+		D8CAE9A92A22575A0029C9FD /* DatabaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CAE9A82A22575A0029C9FD /* DatabaseProtocol.swift */; };
+		D8CAE9AC2A2258010029C9FD /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CAE9AB2A2258010029C9FD /* Card.swift */; };
+		D8CAE9AE2A225C130029C9FD /* Sets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CAE9AD2A225C130029C9FD /* Sets.swift */; };
+		D8CAE9B02A225FA80029C9FD /* UIViewConExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CAE9AF2A225FA80029C9FD /* UIViewConExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +43,11 @@
 		D882274829FD5FCA00698EAE /* TeamsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsCollectionViewCell.swift; sourceTree = "<group>"; };
 		D882274A29FD645600698EAE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D8CAE9A22A2254320029C9FD /* MulticasDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MulticasDelegate.swift; sourceTree = "<group>"; };
+		D8CAE9A42A22550C0029C9FD /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
+		D8CAE9A82A22575A0029C9FD /* DatabaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseProtocol.swift; sourceTree = "<group>"; };
+		D8CAE9AB2A2258010029C9FD /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		D8CAE9AD2A225C130029C9FD /* Sets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sets.swift; sourceTree = "<group>"; };
+		D8CAE9AF2A225FA80029C9FD /* UIViewConExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewConExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,10 +84,11 @@
 		D882272629FCD47700698EAE /* CourtCache */ = {
 			isa = PBXGroup;
 			children = (
-				D882274A29FD645600698EAE /* GoogleService-Info.plist */,
+				D8CAE9AA2A2257ED0029C9FD /* Objects */,
+				D8CAE9A72A2255310029C9FD /* Authentication */,
+				D8CAE9A62A2255190029C9FD /* Database */,
 				D882272729FCD47700698EAE /* AppDelegate.swift */,
 				D882272929FCD47700698EAE /* SceneDelegate.swift */,
-				D882274629FD56BD00698EAE /* FirebaseController.swift */,
 				D882272D29FCD47700698EAE /* Main.storyboard */,
 				D882273029FCD47800698EAE /* Assets.xcassets */,
 				D882273229FCD47800698EAE /* LaunchScreen.storyboard */,
@@ -85,9 +96,37 @@
 				D882272B29FCD47700698EAE /* ViewController.swift */,
 				D882273B29FD53BA00698EAE /* CollectionsCollectionViewController.swift */,
 				D882274829FD5FCA00698EAE /* TeamsCollectionViewCell.swift */,
-				D8CAE9A22A2254320029C9FD /* MulticasDelegate.swift */,
+				D8CAE9AF2A225FA80029C9FD /* UIViewConExtension.swift */,
 			);
 			path = CourtCache;
+			sourceTree = "<group>";
+		};
+		D8CAE9A62A2255190029C9FD /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				D882274A29FD645600698EAE /* GoogleService-Info.plist */,
+				D8CAE9A22A2254320029C9FD /* MulticasDelegate.swift */,
+				D882274629FD56BD00698EAE /* FirebaseController.swift */,
+				D8CAE9A82A22575A0029C9FD /* DatabaseProtocol.swift */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		D8CAE9A72A2255310029C9FD /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				D8CAE9A42A22550C0029C9FD /* AuthViewController.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		D8CAE9AA2A2257ED0029C9FD /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				D8CAE9AB2A2258010029C9FD /* Card.swift */,
+				D8CAE9AD2A225C130029C9FD /* Sets.swift */,
+			);
+			path = Objects;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -174,10 +213,15 @@
 				D882274729FD56BD00698EAE /* FirebaseController.swift in Sources */,
 				D882272C29FCD47700698EAE /* ViewController.swift in Sources */,
 				D882272829FCD47700698EAE /* AppDelegate.swift in Sources */,
+				D8CAE9AE2A225C130029C9FD /* Sets.swift in Sources */,
 				D882274929FD5FCA00698EAE /* TeamsCollectionViewCell.swift in Sources */,
+				D8CAE9A52A22550C0029C9FD /* AuthViewController.swift in Sources */,
 				D8CAE9A32A2254320029C9FD /* MulticasDelegate.swift in Sources */,
 				D882273C29FD53BA00698EAE /* CollectionsCollectionViewController.swift in Sources */,
+				D8CAE9AC2A2258010029C9FD /* Card.swift in Sources */,
+				D8CAE9B02A225FA80029C9FD /* UIViewConExtension.swift in Sources */,
 				D882272A29FCD47700698EAE /* SceneDelegate.swift in Sources */,
+				D8CAE9A92A22575A0029C9FD /* DatabaseProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
