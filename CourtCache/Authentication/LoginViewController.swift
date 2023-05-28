@@ -8,12 +8,14 @@
 import UIKit
 import FirebaseAuth
 
-class AuthViewController: UIViewController {
+class LoginViewController: UIViewController {
     
     weak var databaseController: DatabaseProtocol?
     var authHandle: AuthStateDidChangeListenerHandle?
     var auth = Auth.auth()
-    
+    var appDelegate = {
+        return UIApplication.shared.delegate as! AppDelegate
+    }()
     
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextfield: UITextField!
@@ -33,28 +35,12 @@ class AuthViewController: UIViewController {
                 self.displayMessage(title: "Error", message: error.localizedDescription)
             }
         }
-    }
-    
-    @IBAction func signUpPressed(_ sender: Any) {
-        guard let password = passwordTextfield.text else {
-            displayMessage(title: "Error", message: "Please enter a password")
-            return
-        }
-        guard let email = emailTextField.text else {
-            displayMessage(title: "Error", message: "Please enter an email")
-            return
-        }
-        auth.createUser(withEmail: email, password: password) {
-            (user, error) in
-            if let error = error {
-                self.displayMessage(title: "Error", message: error.localizedDescription)
-            }
-        }
+        self.performSegue(withIdentifier: "toMainSegue", sender: nil)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        databaseController = appDelegate.databaseController
         // Do any additional setup after loading the view.
     }
     
@@ -62,7 +48,7 @@ class AuthViewController: UIViewController {
         authHandle = auth.addStateDidChangeListener() {
             (auth, user) in
             guard user != nil else {return}
-//            self.performSegue(withIdentifier: "loginSegue", sender: nil)
+            self.performSegue(withIdentifier: "toMainSegue", sender: nil)
         }
     }
     

@@ -32,5 +32,5 @@ protocol DatabaseProtocol: AnyObject {
     func cleanup()
     func addListener(listener: DatabaseListener)
     func removeListener(listener: DatabaseListener)
-    func createUser(uid: String)
+    func createUser(username: String, email: String, uid: String) -> User
 }
