@@ -7,10 +7,19 @@
 
 import UIKit
 
-class UserCollectionsTableViewController: UITableViewController {
+class UserCollectionsTableViewController: UITableViewController, DatabaseListener {
+
+    var listenerType: ListenerType = .cards
+    weak var databaseController: DatabaseProtocol?
+    var appDelegate = {
+        return UIApplication.shared.delegate as! AppDelegate
+    }()
+    var cardList: [Card] = []
+    let CELL_CARD = "cardCell"
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        databaseController = appDelegate.databaseController
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -18,28 +27,43 @@ class UserCollectionsTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
+    
+    func onCardsChange(change: DatabaseChange, cards: [Card]) {
+        cardList = cards
+        tableView.reloadData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        databaseController?.addListener(listener: self)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        databaseController?.removeListener(listener: self)
+    }
 
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return cardList.count
     }
 
-    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: CELL_CARD, for: indexPath)
+        let card = cardList[indexPath.row]
+        var content = cell.defaultContentConfiguration()
+        content.text = card.player
+        cell.contentConfiguration = content
         return cell
     }
-    */
+
 
     /*
     // Override to support conditional editing of the table view.

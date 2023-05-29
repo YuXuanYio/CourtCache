@@ -384,28 +384,6 @@
             </objects>
             <point key="canvasLocation" x="1140" y="23"/>
         </scene>
-        <!--Your Collection-->
-        <scene sceneID="fp9-eO-06P">
-            <objects>
-                <viewController id="pTw-sg-e0Q" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="n49-dP-dbT">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="ZQv-Dd-JJM"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Your Collection" id="Zeg-2E-0Rm">
-                        <barButtonItem key="rightBarButtonItem" title="Item" image="plus" catalog="system" id="He1-uH-4ZH">
-                            <connections>
-                                <segue destination="rqk-YW-XTw" kind="show" id="kzd-b5-mKU"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="lqF-0p-LYf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2066.4122137404579" y="768.30985915492965"/>
-        </scene>
         <!--Add To Collection-->
         <scene sceneID="0EG-6d-SoB">
             <objects>
@@ -713,12 +691,47 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="pTw-sg-e0Q" kind="relationship" relationship="rootViewController" id="3Nz-om-OY5"/>
+                        <segue destination="st3-op-ums" kind="relationship" relationship="rootViewController" id="P3z-h4-4u7"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rgy-VS-Vi9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1139.6946564885495" y="768.30985915492965"/>
+        </scene>
+        <!--Your Collection-->
+        <scene sceneID="cq9-Z5-zcD">
+            <objects>
+                <tableViewController id="st3-op-ums" customClass="UserCollectionsTableViewController" customModule="CourtCache" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="yCX-A6-JdD">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cardCell" id="SNr-Fe-kdc">
+                                <rect key="frame" x="0.0" y="50" width="393" height="43.666667938232422"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SNr-Fe-kdc" id="ouz-9Z-WOz">
+                                    <rect key="frame" x="0.0" y="0.0" width="393" height="43.666667938232422"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="st3-op-ums" id="6YW-Kn-Fj5"/>
+                            <outlet property="delegate" destination="st3-op-ums" id="X8a-Is-akm"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Your Collection" id="lgo-nP-C89">
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="plus" catalog="system" id="GDT-Ob-KVD">
+                            <connections>
+                                <segue destination="rqk-YW-XTw" kind="show" id="ugL-co-AhL"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HLV-mT-VxM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2065" y="768"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

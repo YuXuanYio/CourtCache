@@ -18,11 +18,14 @@ class FirebaseController: NSObject, DatabaseProtocol {
     var database: Firestore
     var usersRef: CollectionReference?
     var currentUser: FirebaseAuth.User?
+    var cardList: [Card]
+    var cardRef: CollectionReference?
     
     override init() {
         FirebaseApp.configure()
         database = Firestore.firestore()
         usersRef = database.collection("users")
+        cardList = [Card]()
         super.init()
     }
 
@@ -31,11 +34,15 @@ class FirebaseController: NSObject, DatabaseProtocol {
     }
     
     func addListener(listener: DatabaseListener) {
-        return
+        listeners.addDelegate(listener)
+
+        if listener.listenerType == .cards || listener.listenerType == .all {
+            listener.onCardsChange(change: .update, cards: cardList)
+        }
     }
     
     func removeListener(listener: DatabaseListener) {
-        return
+        listeners.removeDelegate(listener)
     }
     
     func createUser(username: String, email: String, firebaseUser: FirebaseAuth.User) {
@@ -94,7 +101,7 @@ class FirebaseController: NSObject, DatabaseProtocol {
                 card.imageURL = downloadURL.absoluteString
                 // Then, save the card to Firestore.
                 do {
-                    try self.usersRef?.document(uid).collection(team).document(uniqueID).setData(from: card)
+                    try self.usersRef?.document(uid).collection("cards").document(uniqueID).setData(from: card)
                 } catch {
                     print("Failed to serialise card")
                 }
@@ -102,6 +109,51 @@ class FirebaseController: NSObject, DatabaseProtocol {
         }
     }
     
+    func setUpCardsListener() {
+        guard let uid = currentUser?.uid else {
+            return
+        }
+        cardRef = database.collection("users").document(uid).collection("cards")
+        cardRef?.addSnapshotListener() {
+            (querySnapshot, error) in
+            guard let querySnapshot = querySnapshot else {
+                print("Failed to fetch documents with error: \(String(describing: error))")
+                return
+            }
+            self.parseCardsSnapshot(snapshot: querySnapshot)
+        }
+    }
     
+    func parseCardsSnapshot(snapshot: QuerySnapshot) {
+        snapshot.documentChanges.forEach {
+            (change) in
+            var parsedCard: Card?
+            do {
+                parsedCard = try change.document.data(as: Card.self)
+            } catch {
+                print("Unable to decode card. Is the card malformed?")
+                return
+            }
+            guard let card = parsedCard else {
+                print("Document doesn't exist")
+                return;
+            }
+            if change.type == .added {
+                cardList.insert(card, at: Int(change.newIndex))
+            }
+            else if change.type == .modified {
+                cardList[Int(change.oldIndex)] = card
+            }
+            else if change.type == .removed {
+                cardList.remove(at: Int(change.oldIndex))
+            }
+            listeners.invoke {
+                (listener) in
+                if listener.listenerType == ListenerType.cards || listener.listenerType == ListenerType.all {
+                    listener.onCardsChange(change: .update, cards: cardList)
+                }
+            }
+        }
+    }
     
 }

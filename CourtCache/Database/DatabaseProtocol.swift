@@ -17,16 +17,13 @@ enum DatabaseChange {
 }
 
 enum ListenerType {
-    case questions
-    case child
-    case questionsets
     case all
+    case cards
 }
 
 protocol DatabaseListener: AnyObject {
     var listenerType: ListenerType {get set}
-//    func onQuestionsChange(change: DatabaseChange, questions: [Question])
-//    func onSetsChange(change: DatabaseChange, questionSets: [QuestionSet])
+    func onCardsChange(change: DatabaseChange, cards: [Card])
 }
 
 protocol DatabaseProtocol: AnyObject {
@@ -36,4 +33,5 @@ protocol DatabaseProtocol: AnyObject {
     func removeListener(listener: DatabaseListener)
     func createUser(username: String, email: String, firebaseUser: FirebaseAuth.User)
     func addUserCard(player: String, team: String, year: String, set: String, variant: String, numbered: Bool, number: String, auto: Bool, patch: Bool, graded: Bool?, grade: String?, imageData: Data)
+    func setUpCardsListener()
 }
