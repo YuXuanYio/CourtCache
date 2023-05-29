@@ -51,4 +51,25 @@ class FirebaseController: NSObject, DatabaseProtocol {
         }
         currentUser = firebaseUser
     }
+    
+    func addUserCard(player: String, team: String, year: String, set: String, variant: String, numbered: Bool, number: String, auto: Bool, patch: Bool) {
+        guard let uid = currentUser?.uid else {
+            return
+        }
+        let card = Card()
+        card.player = player
+        card.team = team
+        card.year = year
+        card.set = set
+        card.variant = variant
+        card.numbered = numbered
+        card.number = number
+        card.auto = auto
+        card.patch = patch
+        do {
+            try usersRef?.document(uid).collection(team).addDocument(from: card)
+        } catch {
+            print("Failed to serialise card")
+        }
+    }
 }
