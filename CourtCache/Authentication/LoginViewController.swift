@@ -48,6 +48,7 @@ class LoginViewController: UIViewController {
         authHandle = auth.addStateDidChangeListener() {
             (auth, user) in
             guard user != nil else {return}
+            self.databaseController?.currentUser = user
             self.performSegue(withIdentifier: "toMainSegue", sender: nil)
         }
     }

@@ -7,6 +7,7 @@
 
 import Foundation
 import Firebase
+import FirebaseAuth
 import FirebaseFirestoreSwift
 
 enum DatabaseChange {
@@ -29,8 +30,9 @@ protocol DatabaseListener: AnyObject {
 }
 
 protocol DatabaseProtocol: AnyObject {
+    var currentUser: FirebaseAuth.User? {get set}
     func cleanup()
     func addListener(listener: DatabaseListener)
     func removeListener(listener: DatabaseListener)
-    func createUser(username: String, email: String, uid: String) -> User
+    func createUser(username: String, email: String, firebaseUser: FirebaseAuth.User)
 }

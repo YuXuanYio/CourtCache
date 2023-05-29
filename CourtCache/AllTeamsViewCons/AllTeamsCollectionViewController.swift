@@ -9,7 +9,7 @@ import UIKit
 
 private let reuseIdentifier = "Cell"
 
-class CollectionsCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class AllTeamsCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     var teams = [
         "Atlanta Hawks",

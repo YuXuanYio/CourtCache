@@ -16,11 +16,13 @@ class FirebaseController: NSObject, DatabaseProtocol {
     var listeners = MulticastDelegate<DatabaseListener>()
     var database: Firestore
     var usersRef: CollectionReference?
+    var currentUser: FirebaseAuth.User?
     
     override init() {
         FirebaseApp.configure()
         database = Firestore.firestore()
         usersRef = database.collection("users")
+        super.init()
     }
 
     func cleanup() {
@@ -35,19 +37,18 @@ class FirebaseController: NSObject, DatabaseProtocol {
         return
     }
     
-    func createUser(username: String, email: String, uid: String) -> User {
+    func createUser(username: String, email: String, firebaseUser: FirebaseAuth.User) {
         let user = User()
         user.username = username
         user.email = email
-
-        let userRef = usersRef?.document(uid)
+        
+        let userRef = usersRef?.document(firebaseUser.uid)
         
         do {
             try userRef?.setData(from: user)
         } catch {
             print("Failed to serialize user")
         }
-        
-        return user
+        currentUser = firebaseUser
     }
 }

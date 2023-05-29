@@ -40,9 +40,8 @@ class SignUpViewController: UIViewController {
                 self.displayMessage(title: "Error", message: error.localizedDescription)
             }
             if let authResult = authResult {
-                let uid = authResult.user.uid
-                let temp = self.databaseController?.createUser(username: username, email: email, uid: uid)
-                 self.performSegue(withIdentifier: "toMainSegue", sender: nil)
+                self.databaseController?.createUser(username: username, email: email, firebaseUser: authResult.user)
+                self.performSegue(withIdentifier: "toMainSegue", sender: nil)
             }
         }
     }
