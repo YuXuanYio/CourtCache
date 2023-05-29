@@ -35,5 +35,5 @@ protocol DatabaseProtocol: AnyObject {
     func addListener(listener: DatabaseListener)
     func removeListener(listener: DatabaseListener)
     func createUser(username: String, email: String, firebaseUser: FirebaseAuth.User)
-    func addUserCard(player: String, team: String, year: String, set: String, variant: String, numbered: Bool, number: String, auto: Bool, patch: Bool)
+    func addUserCard(player: String, team: String, year: String, set: String, variant: String, numbered: Bool, number: String, auto: Bool, patch: Bool, graded: Bool?, grade: String?, imageData: Data)
 }

@@ -26,8 +26,18 @@ class AddCardViewController: UIViewController, UIImagePickerControllerDelegate, 
     @IBOutlet weak var numberedTextField: UITextField!
     @IBOutlet weak var autoSegmentedControl: UISegmentedControl!
     @IBOutlet weak var patchSegmentedControl: UISegmentedControl!
+    @IBOutlet weak var gradedSegmentedControl: UISegmentedControl!
+    @IBOutlet weak var gradedTextField: UITextField!
     
     @IBAction func addCardPressed(_ sender: Any) {
+        if cardImageView.image == UIImage(named: "tapToAddPhoto") {
+            displayMessage(title: "Error", message: "Please provide an image of the card")
+            return
+        }
+        
+        guard let image = cardImageView.image else { return }
+        guard let imageData = image.jpegData(compressionQuality: 0.75) else { return }
+        
         guard let player = playerTextField.text else {
             displayMessage(title: "Error", message: "Please enter a valid player")
             return
@@ -48,8 +58,9 @@ class AddCardViewController: UIViewController, UIImagePickerControllerDelegate, 
             displayMessage(title: "Error", message: "Please enter a valid variant")
             return
         }
-        var numbered = false, auto = false, patch = false
+        var numbered = false, auto = false, patch = false, graded = false
         var number = "-"
+        var grade = "-"
         if numberedSegmentedControl.selectedSegmentIndex != 0 {
             numbered = true
             number = numberedTextField.text ?? "-"
@@ -60,8 +71,12 @@ class AddCardViewController: UIViewController, UIImagePickerControllerDelegate, 
         if patchSegmentedControl.selectedSegmentIndex != 0 {
             patch = true
         }
+        if gradedSegmentedControl.selectedSegmentIndex != 0 {
+            graded = true
+            grade = gradedTextField.text ?? "-"
+        }
         
-        databaseController?.addUserCard(player: player, team: team, year: year, set: set, variant: variant, numbered: numbered, number: number, auto: auto, patch: patch)
+        databaseController?.addUserCard(player: player, team: team, year: year, set: set, variant: variant, numbered: numbered, number: number, auto: auto, patch: patch, graded: graded, grade: grade, imageData: imageData)
         navigationController?.popViewController(animated: true)
     }
     

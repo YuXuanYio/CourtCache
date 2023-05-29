@@ -21,6 +21,9 @@ class Card: NSObject, Codable {
     var number: String?
     var auto: Bool?
     var patch: Bool?
+    var graded: Bool?
+    var grade: String?
+    var imageURL: String?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -33,5 +36,8 @@ class Card: NSObject, Codable {
         case number
         case auto
         case patch
+        case graded
+        case grade
+        case imageURL
     }
 }

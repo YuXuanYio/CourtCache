@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import FirebaseAuth
 import FirebaseFirestore
+import FirebaseStorage
 
 class FirebaseController: NSObject, DatabaseProtocol {
     
@@ -52,7 +53,8 @@ class FirebaseController: NSObject, DatabaseProtocol {
         currentUser = firebaseUser
     }
     
-    func addUserCard(player: String, team: String, year: String, set: String, variant: String, numbered: Bool, number: String, auto: Bool, patch: Bool) {
+    func addUserCard(player: String, team: String, year: String, set: String, variant: String, numbered: Bool, number: String, auto: Bool, patch: Bool, graded: Bool?, grade: String?, imageData: Data) {
+        
         guard let uid = currentUser?.uid else {
             return
         }
@@ -66,10 +68,40 @@ class FirebaseController: NSObject, DatabaseProtocol {
         card.number = number
         card.auto = auto
         card.patch = patch
-        do {
-            try usersRef?.document(uid).collection(team).addDocument(from: card)
-        } catch {
-            print("Failed to serialise card")
+        card.graded = graded
+        card.grade = grade
+        
+        let uniqueID = UUID().uuidString
+        let storageRef = Storage.storage().reference().child("images/\(uid)/\(uniqueID).jpg")
+        let metadata = StorageMetadata()
+        metadata.contentType = "image/jpeg"
+        storageRef.putData(imageData, metadata: metadata) { (metadata, error) in
+            guard let metadata = metadata else {
+                print("Failed to upload image")
+                return
+            }
+            // Metadata contains file metadata such as size, content-type.
+            let size = metadata.size
+            print("Size of the uploaded image: \(size)")
+
+            // Now that the upload is complete, get the download URL.
+            storageRef.downloadURL { (url, error) in
+                guard let downloadURL = url else {
+                    print("Failed to get download URL")
+                    return
+                }
+                // Set the download URL to the card.
+                card.imageURL = downloadURL.absoluteString
+                // Then, save the card to Firestore.
+                do {
+                    try self.usersRef?.document(uid).collection(team).document(uniqueID).setData(from: card)
+                } catch {
+                    print("Failed to serialise card")
+                }
+            }
         }
     }
+    
+    
+    
 }
