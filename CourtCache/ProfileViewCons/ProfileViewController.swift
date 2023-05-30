@@ -12,7 +12,17 @@ class ProfileViewController: UIViewController {
     
     var authHandle: AuthStateDidChangeListenerHandle?
 
-
+    @IBOutlet weak var profileImageView: UIImageView!
+    @IBOutlet weak var usernameTextField: UITextField!
+    @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var totalCardsLabel: UILabel!
+    @IBOutlet weak var rookiesLabel: UILabel!
+    @IBOutlet weak var autosLabel: UILabel!
+    @IBOutlet weak var slabsLabel: UILabel!
+    
+    @IBAction func choosePhotoPressed(_ sender: Any) {
+    }
+    
     @IBAction func logoutPressed(_ sender: Any) {
         let firebaseAuth = Auth.auth()
         do {
@@ -25,10 +35,10 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.title = "Profile"
     }
     
-
     /*
     // MARK: - Navigation
 

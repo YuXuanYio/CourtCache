@@ -65,20 +65,20 @@ class AddCardViewController: UIViewController, UIImagePickerControllerDelegate, 
         var numbered = false, auto = false, patch = false, graded = false, rookie = false
         var number = "-"
         var grade = "-"
-        if rookieSegmenetedControl.selectedSegmentIndex != 0 {
+        if rookieSegmenetedControl.selectedSegmentIndex != NO {
             rookie = true
         }
-        if numberedSegmentedControl.selectedSegmentIndex != 0 {
+        if numberedSegmentedControl.selectedSegmentIndex != NO {
             numbered = true
             number = numberedTextField.text ?? "-"
         }
-        if autoSegmentedControl.selectedSegmentIndex != 0 {
+        if autoSegmentedControl.selectedSegmentIndex != NO {
             auto = true
         }
-        if patchSegmentedControl.selectedSegmentIndex != 0 {
+        if patchSegmentedControl.selectedSegmentIndex != NO {
             patch = true
         }
-        if gradedSegmentedControl.selectedSegmentIndex != 0 {
+        if gradedSegmentedControl.selectedSegmentIndex != NO {
             graded = true
             grade = gradedTextField.text ?? "-"
         }
@@ -103,6 +103,8 @@ class AddCardViewController: UIViewController, UIImagePickerControllerDelegate, 
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
         self.view.addSubview(activityIndicator)
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.title = "Add A Card"
     }
     
     deinit {

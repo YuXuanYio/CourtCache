@@ -21,6 +21,8 @@ class AllTeamsCollectionViewController: UICollectionViewController, UICollection
         collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
 
         // Do any additional setup after loading the view.
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.title = "All Teams"
     }
 
     /*

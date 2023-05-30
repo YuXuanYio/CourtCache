@@ -19,6 +19,7 @@ class UserCollectionsTableViewController: UITableViewController, DatabaseListene
     var cardList: [Card] = []
     var userCollection: [(String, Int, [Card])] = []
     var searchedCollection: [(String, Int, [Card])] = []
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,10 +28,14 @@ class UserCollectionsTableViewController: UITableViewController, DatabaseListene
         searchController.searchBar.delegate = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search"
-//        searchController.searchBar.showsCancelButton = false
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
-
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.title = "Your Collection"
+        activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        self.view.addSubview(activityIndicator)
     }
     
     func onCardsChange(change: DatabaseChange, cards: [Card]) {
@@ -63,7 +68,31 @@ class UserCollectionsTableViewController: UITableViewController, DatabaseListene
         databaseController?.removeListener(listener: self)
     }
     
-    func loadImageData(filename: String) -> UIImage? {
+    func loadImageData(card: Card) async -> UIImage? {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectory = paths[0]
+        let imageURL = documentsDirectory.appendingPathComponent(card.imagePath ?? "")
+        if let image = UIImage(contentsOfFile: imageURL.path) {
+            return image
+        } else {
+            // Image not found in local file system, download from Firebase
+            if let url = URL(string: card.imageURL ?? "") {
+                do {
+                    let (data, _) = try await URLSession.shared.data(from: url)
+                    let image = UIImage(data: data)
+                    let imageData = image?.jpegData(compressionQuality: 0.75) ?? Data()
+                    self.databaseController?.addUserCardImageToCoreData(imagePath: card.imagePath ?? "", imageData: imageData ?? Data(), uid: self.databaseController?.currentUser?.uid ?? "")
+                    return image
+                } catch {
+                    print("Error downloading image from Firebase: \(error)")
+                    return nil
+                }
+            }
+        }
+        return nil
+    }
+    
+    func loadImageDataFromCoreData(filename: String) -> UIImage? {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
 
@@ -123,7 +152,19 @@ class UserCollectionsTableViewController: UITableViewController, DatabaseListene
         cell.yearLabel.text = card.year
         cell.playerNameLabel.text = card.player
         cell.setLabel.text = "\(String(describing: card.set!))" + ", " + "\(String(describing: card.variant!))"
-        cell.cardCellImageView.image = loadImageData(filename: card.imagePath ?? "")
+        cell.cardCellImageView.image = nil
+        Task {
+            DispatchQueue.main.async {
+                self.activityIndicator.startAnimating()
+            }
+            let image = await loadImageData(card: card)
+            DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
+                // Check if this cell is still being used for the same index path
+                guard let currentIndexPath = tableView.indexPath(for: cell), currentIndexPath == indexPath else { return }
+                cell.cardCellImageView.image = image
+            }
+        }
         guard let graded = card.graded else {
             cell.gradeLabel.text = "Error getting grade"
             return cell
@@ -144,49 +185,34 @@ class UserCollectionsTableViewController: UITableViewController, DatabaseListene
         return searchedCollection[section].0
     }
 
-    /*
-    // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
-    */
 
-    /*
-    // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Delete the row from the data source
+            // NOTE: Delete from database!!! Find out how to clear the firebase photo as well.
             tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        }
     }
-    */
 
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "viewCardSegue", sender: nil)
     }
-    */
 
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "viewCardSegue" {
+            if let selectedIndexPath = tableView.indexPathForSelectedRow {
+                let destination = segue.destination as! CardViewController
+                let card = searchedCollection[selectedIndexPath.section].2[selectedIndexPath.row]
+                destination.card = card
+                destination.cardImage = loadImageDataFromCoreData(filename: card.imagePath ?? "") ?? UIImage()
+            }
+        }
     }
-    */
 
 }
