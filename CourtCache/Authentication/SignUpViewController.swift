@@ -49,6 +49,10 @@ class SignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         databaseController = appDelegate.databaseController
+        emailTextField.delegate = self
+        usernameTextField.delegate = self
+        passwordTextField.delegate = self
+        hideKeyboardWhenTappedAround()
         // Do any additional setup after loading the view.
     }
     

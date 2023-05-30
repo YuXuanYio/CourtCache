@@ -8,7 +8,7 @@
 import UIKit
 import CoreData
 
-class UserCollectionsTableViewController: UITableViewController, DatabaseListener {
+class UserCollectionsTableViewController: UITableViewController, DatabaseListener, UISearchBarDelegate {
 
     var listenerType: ListenerType = .cards
     weak var databaseController: DatabaseProtocol?
@@ -18,10 +18,19 @@ class UserCollectionsTableViewController: UITableViewController, DatabaseListene
     let CELL_CARD = "cardCell"
     var cardList: [Card] = []
     var userCollection: [(String, Int, [Card])] = []
+    var searchedCollection: [(String, Int, [Card])] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         databaseController = appDelegate.databaseController
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchBar.delegate = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search"
+//        searchController.searchBar.showsCancelButton = false
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+
     }
     
     func onCardsChange(change: DatabaseChange, cards: [Card]) {
@@ -40,7 +49,7 @@ class UserCollectionsTableViewController: UITableViewController, DatabaseListene
                 userCollection.append((team, 1, [card]))
             }
         }
-        print(userCollection)
+        searchedCollection = userCollection
         tableView.reloadData()
     }
     
@@ -63,21 +72,54 @@ class UserCollectionsTableViewController: UITableViewController, DatabaseListene
         
         return image
     }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        searchedCollection = []
+        if searchText.isEmpty {
+            searchedCollection = userCollection
+        } else {
+            for tuple in userCollection {
+                let team = tuple.0
+                let cards = tuple.2
+                if team.lowercased().contains(searchText.lowercased()) {
+                    // If the team name contains the search text, include all of the team's cards in the searched collection.
+                    searchedCollection.append(tuple)
+                } else {
+                    // Otherwise, filter the team's cards based on the player's name.
+                    let filteredCards = cards.filter { card in
+                        guard let player = card.player else { return false }
+                        return player.lowercased().contains(searchText.lowercased())
+                    }
+                    if !filteredCards.isEmpty {
+                        searchedCollection.append((team, filteredCards.count, filteredCards))
+                    }
+                }
+            }
+        }
+        tableView.reloadData()
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchedCollection = userCollection
+        tableView.reloadData()
+    }
+
+
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return userCollection.count
+        return searchedCollection.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return userCollection[section].1
+        return searchedCollection[section].1
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CELL_CARD, for: indexPath) as! UserCollectionTableViewCell
-        let card = userCollection[indexPath.section].2[indexPath.row]
+        let card = searchedCollection[indexPath.section].2[indexPath.row]
         cell.yearLabel.text = card.year
         cell.playerNameLabel.text = card.player
         cell.setLabel.text = "\(String(describing: card.set!))" + ", " + "\(String(describing: card.variant!))"
@@ -99,7 +141,7 @@ class UserCollectionsTableViewController: UITableViewController, DatabaseListene
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return userCollection[section].0
+        return searchedCollection[section].0
     }
 
     /*

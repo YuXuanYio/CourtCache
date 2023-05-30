@@ -18,10 +18,10 @@ class LoginViewController: UIViewController {
     }()
     
     @IBOutlet weak var emailTextField: UITextField!
-    @IBOutlet weak var passwordTextfield: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
     
     @IBAction func loginPressed(_ sender: Any) {
-        guard let password = passwordTextfield.text else {
+        guard let password = passwordTextField.text else {
             displayMessage(title: "Error", message: "Please enter a password")
             return
         }
@@ -41,7 +41,9 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         databaseController = appDelegate.databaseController
-        // Do any additional setup after loading the view.
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+        hideKeyboardWhenTappedAround()
     }
     
     override func viewWillAppear(_ animated: Bool) {

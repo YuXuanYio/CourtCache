@@ -166,14 +166,68 @@ class AddCardViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     func initTextFieldDelegates() {
         playerTextField.delegate = self
+        playerTextField.autocapitalizationType = .none
+
         teamTextField.delegate = self
+        teamTextField.autocapitalizationType = .none
+
         yearTextField.delegate = self
+        yearTextField.autocapitalizationType = .none
+
         setTextField.delegate = self
+        setTextField.autocapitalizationType = .none
+
         variantTextField.delegate = self
+        variantTextField.autocapitalizationType = .none
+
         numberedTextField.delegate = self
+        numberedTextField.autocapitalizationType = .none
+
         gradedTextField.delegate = self
+        gradedTextField.autocapitalizationType = .allCharacters
+
         hideKeyboardWhenTappedAround()
     }
+
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == playerTextField{
+            return !autoCompleteText( in : textField, using: string, suggestionsArray: playerNames)
+        } else if textField == teamTextField {
+            return !autoCompleteText( in : textField, using: string, suggestionsArray: teams)
+        } else if textField == yearTextField {
+            return !autoCompleteText( in : textField, using: string, suggestionsArray: years)
+        } else if textField == setTextField {
+            return !autoCompleteText( in : textField, using: string, suggestionsArray: sets)
+        }
+        return true
+    }
+    
+    func capitalizeFirstLetter(of string: String) -> String {
+        return string.prefix(1).capitalized + string.dropFirst()
+    }
+
+    func autoCompleteText(in textField: UITextField, using string: String, suggestionsArray: [String]) -> Bool {
+        if !string.isEmpty,
+            let selectedTextRange = textField.selectedTextRange,
+            selectedTextRange.end == textField.endOfDocument,
+            let prefixRange = textField.textRange(from: textField.beginningOfDocument, to: selectedTextRange.start),
+            let text = textField.text(in: prefixRange) {
+            let prefix = text + string
+            let matches = suggestionsArray.filter {
+                $0.lowercased().hasPrefix(prefix.lowercased())
+            }
+            if (matches.count > 0) {
+                textField.text = capitalizeFirstLetter(of: matches[0])
+                if let start = textField.position(from: textField.beginningOfDocument, offset: prefix.count) {
+                    textField.selectedTextRange = textField.textRange(from: start, to: textField.endOfDocument)
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
 
     /*
     // MARK: - Navigation

@@ -91,7 +91,7 @@
                     <navigationItem key="navigationItem" title="Login" id="B2j-qD-DN6"/>
                     <connections>
                         <outlet property="emailTextField" destination="6XP-Jw-ESk" id="6fN-JN-xY8"/>
-                        <outlet property="passwordTextfield" destination="gtV-eT-irn" id="xO0-oE-p1y"/>
+                        <outlet property="passwordTextField" destination="gtV-eT-irn" id="xO0-oE-p1y"/>
                         <segue destination="uAD-ZI-Om9" kind="show" identifier="toMainSegue" id="veB-6G-4RA"/>
                     </connections>
                 </viewController>
@@ -223,8 +223,8 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="A9S-Ha-qkO" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="All Teams" image="figure.mixed.cardio" catalog="system" id="iac-JP-yMl"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="N2W-j3-xwW">
-                        <rect key="frame" x="0.0" y="59" width="393" height="96"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="N2W-j3-xwW">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -236,7 +236,7 @@
             </objects>
             <point key="canvasLocation" x="1139.6946564885495" y="-700"/>
         </scene>
-        <!--Teams-->
+        <!--All Teams Collection View Controller-->
         <scene sceneID="Afq-9h-nii">
             <objects>
                 <collectionViewController id="veL-He-lAu" customClass="AllTeamsCollectionViewController" customModule="CourtCache" customModuleProvider="target" sceneMemberID="viewController">
@@ -283,7 +283,7 @@
                             <outlet property="delegate" destination="veL-He-lAu" id="F3h-nv-sQn"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" title="Teams" id="ZGz-cl-s9Y"/>
+                    <navigationItem key="navigationItem" id="ZGz-cl-s9Y"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HQV-g6-cxr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -295,8 +295,8 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="zWz-MY-MmK" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Profile" image="person.fill" catalog="system" id="rIG-2h-Eev"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="q3p-Te-jdv">
-                        <rect key="frame" x="0.0" y="59" width="393" height="96"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="q3p-Te-jdv">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -308,7 +308,7 @@
             </objects>
             <point key="canvasLocation" x="1140" y="1482"/>
         </scene>
-        <!--Profile-->
+        <!--Profile View Controller-->
         <scene sceneID="S6u-hc-6wq">
             <objects>
                 <viewController id="TNx-dH-6K4" customClass="ProfileViewController" customModule="CourtCache" customModuleProvider="target" sceneMemberID="viewController">
@@ -318,7 +318,8 @@
                         <viewLayoutGuide key="safeArea" id="HXP-z5-HRc"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Profile" id="DjR-xb-w8L">
+                    <navigationItem key="navigationItem" id="DjR-xb-w8L">
+                        <nil key="title"/>
                         <barButtonItem key="rightBarButtonItem" title="Log Out" id="v5V-gJ-xQV">
                             <connections>
                                 <action selector="logoutPressed:" destination="TNx-dH-6K4" id="TFb-oF-RKx"/>
@@ -330,7 +331,7 @@
             </objects>
             <point key="canvasLocation" x="2066" y="1482"/>
         </scene>
-        <!--Favourites-->
+        <!--Collection View Controller-->
         <scene sceneID="d8v-99-1QQ">
             <objects>
                 <collectionViewController id="5gf-b4-NTQ" sceneMemberID="viewController">
@@ -359,7 +360,7 @@
                             <outlet property="delegate" destination="5gf-b4-NTQ" id="lvA-D8-bXj"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" title="Favourites" id="zZu-xU-WxS"/>
+                    <navigationItem key="navigationItem" id="zZu-xU-WxS"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5uU-32-146" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -371,8 +372,8 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ebE-Kb-mnF" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Favourites" image="star.fill" catalog="system" id="Es1-3Z-DqA"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="GP0-IO-Gwu">
-                        <rect key="frame" x="0.0" y="59" width="393" height="96"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="GP0-IO-Gwu">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -516,7 +517,7 @@
                                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ijp-HY-8MH">
                                                 <rect key="frame" x="20" y="386" width="353" height="34"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Graded?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yFI-lM-0MH">
                                                 <rect key="frame" x="20" y="1108" width="353" height="21"/>
@@ -706,8 +707,8 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="KZI-Ru-kuy" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Your Collection" image="folder.fill" catalog="system" id="YRf-s7-5rW"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="VMD-9x-AmH">
-                        <rect key="frame" x="0.0" y="59" width="393" height="96"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="VMD-9x-AmH">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -719,7 +720,7 @@
             </objects>
             <point key="canvasLocation" x="1139.6946564885495" y="768.30985915492965"/>
         </scene>
-        <!--Your Collection-->
+        <!--User Collections Table View Controller-->
         <scene sceneID="cq9-Z5-zcD">
             <objects>
                 <tableViewController id="st3-op-ums" customClass="UserCollectionsTableViewController" customModule="CourtCache" customModuleProvider="target" sceneMemberID="viewController">
@@ -794,7 +795,7 @@
                             <outlet property="delegate" destination="st3-op-ums" id="X8a-Is-akm"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Your Collection" id="lgo-nP-C89">
+                    <navigationItem key="navigationItem" id="lgo-nP-C89">
                         <barButtonItem key="rightBarButtonItem" title="Item" image="plus" catalog="system" id="GDT-Ob-KVD">
                             <connections>
                                 <segue destination="rqk-YW-XTw" kind="show" id="ugL-co-AhL"/>
