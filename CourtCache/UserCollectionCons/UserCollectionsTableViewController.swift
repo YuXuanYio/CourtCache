@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 class UserCollectionsTableViewController: UITableViewController, DatabaseListener {
 
@@ -14,22 +15,32 @@ class UserCollectionsTableViewController: UITableViewController, DatabaseListene
     var appDelegate = {
         return UIApplication.shared.delegate as! AppDelegate
     }()
-    var cardList: [Card] = []
     let CELL_CARD = "cardCell"
-
+    var cardList: [Card] = []
+    var userCollection: [(String, Int, [Card])] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         databaseController = appDelegate.databaseController
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
     func onCardsChange(change: DatabaseChange, cards: [Card]) {
+        userCollection = []
         cardList = cards
+        for card in cardList {
+            guard let team = card.team else {
+                continue
+            }
+            if let index = userCollection.firstIndex(where: { $0.0 == team }) {
+                // Increment the count of the found team
+                userCollection[index].1 += 1
+                userCollection[index].2.append(card)
+            } else {
+                // If the team is not in the list, add it with a count of 1
+                userCollection.append((team, 1, [card]))
+            }
+        }
+        print(userCollection)
         tableView.reloadData()
     }
     
@@ -42,28 +53,54 @@ class UserCollectionsTableViewController: UITableViewController, DatabaseListene
         super.viewWillDisappear(animated)
         databaseController?.removeListener(listener: self)
     }
+    
+    func loadImageData(filename: String) -> UIImage? {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectory = paths[0]
 
+        let imageURL = documentsDirectory.appendingPathComponent(filename)
+        let image = UIImage(contentsOfFile: imageURL.path)
+        
+        return image
+    }
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return userCollection.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return cardList.count
+        return userCollection[section].1
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: CELL_CARD, for: indexPath)
-        let card = cardList[indexPath.row]
-        var content = cell.defaultContentConfiguration()
-        content.text = card.player
-        cell.contentConfiguration = content
+        let cell = tableView.dequeueReusableCell(withIdentifier: CELL_CARD, for: indexPath) as! UserCollectionTableViewCell
+        let card = userCollection[indexPath.section].2[indexPath.row]
+        cell.yearLabel.text = card.year
+        cell.playerNameLabel.text = card.player
+        cell.setLabel.text = "\(String(describing: card.set!))" + ", " + "\(String(describing: card.variant!))"
+        cell.cardCellImageView.image = loadImageData(filename: card.imagePath ?? "")
+        guard let graded = card.graded else {
+            cell.gradeLabel.text = "Error getting grade"
+            return cell
+        }
+        if graded {
+            cell.gradeLabel.text = card.grade
+        } else {
+            cell.gradeLabel.text = "Raw"
+        }
         return cell
     }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 112
+    }
 
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return userCollection[section].0
+    }
 
     /*
     // Override to support conditional editing of the table view.

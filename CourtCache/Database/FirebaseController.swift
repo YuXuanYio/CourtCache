@@ -11,6 +11,7 @@ import Firebase
 import FirebaseAuth
 import FirebaseFirestore
 import FirebaseStorage
+import CoreData
 
 class FirebaseController: NSObject, DatabaseProtocol {
     
@@ -20,12 +21,17 @@ class FirebaseController: NSObject, DatabaseProtocol {
     var currentUser: FirebaseAuth.User?
     var cardList: [Card]
     var cardRef: CollectionReference?
-    
+    var managedObjectContext: NSManagedObjectContext?
+
     override init() {
         FirebaseApp.configure()
         database = Firestore.firestore()
         usersRef = database.collection("users")
         cardList = [Card]()
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        managedObjectContext = appDelegate.persistentContainer?.viewContext
+
         super.init()
     }
 
@@ -60,7 +66,7 @@ class FirebaseController: NSObject, DatabaseProtocol {
         currentUser = firebaseUser
     }
     
-    func addUserCard(player: String, team: String, year: String, set: String, variant: String, numbered: Bool, number: String, auto: Bool, patch: Bool, graded: Bool?, grade: String?, imageData: Data) {
+    func addUserCard(player: String, team: String, year: String, rookie: Bool, set: String, variant: String, numbered: Bool, number: String, auto: Bool, patch: Bool, graded: Bool?, grade: String?, imageData: Data) {
         
         guard let uid = currentUser?.uid else {
             return
@@ -69,6 +75,7 @@ class FirebaseController: NSObject, DatabaseProtocol {
         card.player = player
         card.team = team
         card.year = year
+        card.rookie = rookie
         card.set = set
         card.variant = variant
         card.numbered = numbered
@@ -77,11 +84,13 @@ class FirebaseController: NSObject, DatabaseProtocol {
         card.patch = patch
         card.graded = graded
         card.grade = grade
+        // NOTE: Add uniqueID path of image to card and try storing into coredata again. 
         
         let uniqueID = UUID().uuidString
         let storageRef = Storage.storage().reference().child("images/\(uid)/\(uniqueID).jpg")
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpeg"
+        card.imagePath = "images/\(uid)/\(uniqueID).jpg"
         storageRef.putData(imageData, metadata: metadata) { (metadata, error) in
             guard let metadata = metadata else {
                 print("Failed to upload image")
@@ -99,6 +108,7 @@ class FirebaseController: NSObject, DatabaseProtocol {
                 }
                 // Set the download URL to the card.
                 card.imageURL = downloadURL.absoluteString
+                self.addUserCardImageToCoreData(imagePath: card.imagePath!, imageData: imageData, uid: uid)
                 // Then, save the card to Firestore.
                 do {
                     try self.usersRef?.document(uid).collection("cards").document(uniqueID).setData(from: card)
@@ -106,6 +116,24 @@ class FirebaseController: NSObject, DatabaseProtocol {
                     print("Failed to serialise card")
                 }
             }
+        }
+    }
+    
+    func addUserCardImageToCoreData(imagePath: String, imageData: Data, uid: String) {
+        let pathsList = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentDirectory = pathsList[0]
+        let imageFile = documentDirectory.appendingPathComponent(imagePath)
+        let imageDirectory = imageFile.deletingLastPathComponent()
+
+        do {
+            try FileManager.default.createDirectory(at: imageDirectory, withIntermediateDirectories: true, attributes: nil)
+            try imageData.write(to: imageFile)
+            let cardImageEntity = NSEntityDescription.insertNewObject(forEntityName: "CardImageMetaData", into: managedObjectContext!) as! CardImageMetaData
+            cardImageEntity.uid = uid
+            cardImageEntity.filename = imagePath
+            try managedObjectContext?.save()
+        } catch {
+            print("Error storing image into local storage: \(error)")
         }
     }
     

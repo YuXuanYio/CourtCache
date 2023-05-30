@@ -15,11 +15,14 @@ class AddCardViewController: UIViewController, UIImagePickerControllerDelegate, 
     var appDelegate = {
         return UIApplication.shared.delegate as! AppDelegate
     }()
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var cardImageView: UIImageView!
     @IBOutlet weak var playerTextField: UITextField!
     @IBOutlet weak var teamTextField: UITextField!
     @IBOutlet weak var yearTextField: UITextField!
+    @IBOutlet weak var rookieSegmenetedControl: UISegmentedControl!
     @IBOutlet weak var setTextField: UITextField!
     @IBOutlet weak var variantTextField: UITextField!
     @IBOutlet weak var numberedSegmentedControl: UISegmentedControl!
@@ -30,6 +33,7 @@ class AddCardViewController: UIViewController, UIImagePickerControllerDelegate, 
     @IBOutlet weak var gradedTextField: UITextField!
     
     @IBAction func addCardPressed(_ sender: Any) {
+        activityIndicator.startAnimating()
         if cardImageView.image == UIImage(named: "tapToAddPhoto") {
             displayMessage(title: "Error", message: "Please provide an image of the card")
             return
@@ -58,9 +62,12 @@ class AddCardViewController: UIViewController, UIImagePickerControllerDelegate, 
             displayMessage(title: "Error", message: "Please enter a valid variant")
             return
         }
-        var numbered = false, auto = false, patch = false, graded = false
+        var numbered = false, auto = false, patch = false, graded = false, rookie = false
         var number = "-"
         var grade = "-"
+        if rookieSegmenetedControl.selectedSegmentIndex != 0 {
+            rookie = true
+        }
         if numberedSegmentedControl.selectedSegmentIndex != 0 {
             numbered = true
             number = numberedTextField.text ?? "-"
@@ -76,8 +83,11 @@ class AddCardViewController: UIViewController, UIImagePickerControllerDelegate, 
             grade = gradedTextField.text ?? "-"
         }
         
-        databaseController?.addUserCard(player: player, team: team, year: year, set: set, variant: variant, numbered: numbered, number: number, auto: auto, patch: patch, graded: graded, grade: grade, imageData: imageData)
-        navigationController?.popViewController(animated: true)
+        databaseController?.addUserCard(player: player, team: team, year: year, rookie: rookie, set: set, variant: variant, numbered: numbered, number: number, auto: auto, patch: patch, graded: graded, grade: grade, imageData: imageData)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.activityIndicator.stopAnimating()
+            self.navigationController?.popViewController(animated: true)
+        }
     }
     
     override func viewDidLoad() {
@@ -86,6 +96,18 @@ class AddCardViewController: UIViewController, UIImagePickerControllerDelegate, 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.imageTapped(gesture:)))
         cardImageView.addGestureRecognizer(tapGesture)
         cardImageView.isUserInteractionEnabled = true
+        initTextFieldDelegates()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        self.view.addSubview(activityIndicator)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     // MARK: - Gallery Picker Related Functions
@@ -125,14 +147,33 @@ class AddCardViewController: UIViewController, UIImagePickerControllerDelegate, 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
-    // MARK: - NOTE, ADD TO INFO PLIST
-    /*
-     <key>NSCameraUsageDescription</key>
-     <string>This app requires access to the camera.</string>
-     <key>NSPhotoLibraryUsageDescription</key>
-     <string>This app requires access to the photo library.</string>
-     */
     
+    // MARK: - TextField and Keyboard Related Functions
+    @objc func keyboardWillShow(notification: NSNotification) {
+        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+            return
+        }
+        let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardSize.height, right: 0.0)
+        scrollView.contentInset = contentInsets
+        scrollView.scrollIndicatorInsets = contentInsets
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification) {
+        let contentInsets = UIEdgeInsets.zero
+        scrollView.contentInset = contentInsets
+        scrollView.scrollIndicatorInsets = contentInsets
+    }
+    
+    func initTextFieldDelegates() {
+        playerTextField.delegate = self
+        teamTextField.delegate = self
+        yearTextField.delegate = self
+        setTextField.delegate = self
+        variantTextField.delegate = self
+        numberedTextField.delegate = self
+        gradedTextField.delegate = self
+        hideKeyboardWhenTappedAround()
+    }
 
     /*
     // MARK: - Navigation

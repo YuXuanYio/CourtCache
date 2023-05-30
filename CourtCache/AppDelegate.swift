@@ -6,16 +6,24 @@
 //
 
 import UIKit
+import CoreData
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var databaseController: DatabaseProtocol?
-    var window: UIWindow?
+    var persistentContainer: NSPersistentContainer?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        databaseController = FirebaseController()
+        persistentContainer = NSPersistentContainer(name: "CardImageModel")
+        persistentContainer?.loadPersistentStores() {
+            (description, error) in
+            if let error = error {
+            fatalError("Failed to load CoreData stack with error: \(error)")
+            }
+            self.databaseController = FirebaseController()
+        }
         return true
     }
 

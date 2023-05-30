@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		D816794A2A24800D0005B7CE /* HardCodedDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81679492A24800D0005B7CE /* HardCodedDetails.swift */; };
+		D816794E2A25796D0005B7CE /* UserCollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816794D2A25796D0005B7CE /* UserCollectionTableViewCell.swift */; };
+		D81679512A2587030005B7CE /* CardImageModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D816794F2A2587030005B7CE /* CardImageModel.xcdatamodeld */; };
+		D81679542A258B590005B7CE /* CardImageMetaData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81679522A258B590005B7CE /* CardImageMetaData+CoreDataClass.swift */; };
+		D81679552A258B590005B7CE /* CardImageMetaData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81679532A258B590005B7CE /* CardImageMetaData+CoreDataProperties.swift */; };
 		D882272829FCD47700698EAE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D882272729FCD47700698EAE /* AppDelegate.swift */; };
 		D882272A29FCD47700698EAE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D882272929FCD47700698EAE /* SceneDelegate.swift */; };
 		D882272C29FCD47700698EAE /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D882272B29FCD47700698EAE /* TabBarController.swift */; };
@@ -37,6 +41,10 @@
 
 /* Begin PBXFileReference section */
 		D81679492A24800D0005B7CE /* HardCodedDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HardCodedDetails.swift; sourceTree = "<group>"; };
+		D816794D2A25796D0005B7CE /* UserCollectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCollectionTableViewCell.swift; sourceTree = "<group>"; };
+		D81679502A2587030005B7CE /* CardImageModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CardImageModel.xcdatamodel; sourceTree = "<group>"; };
+		D81679522A258B590005B7CE /* CardImageMetaData+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CardImageMetaData+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D81679532A258B590005B7CE /* CardImageMetaData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CardImageMetaData+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D882272429FCD47700698EAE /* CourtCache.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CourtCache.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D882272729FCD47700698EAE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D882272929FCD47700698EAE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -104,6 +112,7 @@
 				D882273029FCD47800698EAE /* Assets.xcassets */,
 				D882273229FCD47800698EAE /* LaunchScreen.storyboard */,
 				D882273529FCD47800698EAE /* Info.plist */,
+				D81679492A24800D0005B7CE /* HardCodedDetails.swift */,
 				D8EF79822A239527006A9D16 /* AllTeamsViewCons */,
 				D8EF79872A2444A2006A9D16 /* UserCollectionCons */,
 				D8EF79882A2444D5006A9D16 /* ProfileViewCons */,
@@ -120,6 +129,9 @@
 				D8CAE9A22A2254320029C9FD /* MulticasDelegate.swift */,
 				D882274629FD56BD00698EAE /* FirebaseController.swift */,
 				D8CAE9A82A22575A0029C9FD /* DatabaseProtocol.swift */,
+				D816794F2A2587030005B7CE /* CardImageModel.xcdatamodeld */,
+				D81679532A258B590005B7CE /* CardImageMetaData+CoreDataProperties.swift */,
+				D81679522A258B590005B7CE /* CardImageMetaData+CoreDataClass.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -166,7 +178,7 @@
 			children = (
 				D8EF79892A244608006A9D16 /* UserCollectionsTableViewController.swift */,
 				D8EF79852A24449E006A9D16 /* AddCardViewController.swift */,
-				D81679492A24800D0005B7CE /* HardCodedDetails.swift */,
+				D816794D2A25796D0005B7CE /* UserCollectionTableViewCell.swift */,
 			);
 			path = UserCollectionCons;
 			sourceTree = "<group>";
@@ -262,6 +274,7 @@
 			files = (
 				D882274729FD56BD00698EAE /* FirebaseController.swift in Sources */,
 				D882272C29FCD47700698EAE /* TabBarController.swift in Sources */,
+				D81679552A258B590005B7CE /* CardImageMetaData+CoreDataProperties.swift in Sources */,
 				D8EF798A2A244608006A9D16 /* UserCollectionsTableViewController.swift in Sources */,
 				D882272829FCD47700698EAE /* AppDelegate.swift in Sources */,
 				D8CAE9AE2A225C130029C9FD /* Sets.swift in Sources */,
@@ -270,8 +283,11 @@
 				D8EF79802A23440A006A9D16 /* User.swift in Sources */,
 				D8CAE9A32A2254320029C9FD /* MulticasDelegate.swift in Sources */,
 				D8EF79862A24449E006A9D16 /* AddCardViewController.swift in Sources */,
+				D81679542A258B590005B7CE /* CardImageMetaData+CoreDataClass.swift in Sources */,
 				D882273C29FD53BA00698EAE /* AllTeamsCollectionViewController.swift in Sources */,
 				D8CAE9AC2A2258010029C9FD /* Card.swift in Sources */,
+				D816794E2A25796D0005B7CE /* UserCollectionTableViewCell.swift in Sources */,
+				D81679512A2587030005B7CE /* CardImageModel.xcdatamodeld in Sources */,
 				D8CAE9B02A225FA80029C9FD /* UIViewConExtension.swift in Sources */,
 				D882272A29FCD47700698EAE /* SceneDelegate.swift in Sources */,
 				D8EF79842A23953F006A9D16 /* ProfileViewController.swift in Sources */,
@@ -529,6 +545,19 @@
 			productName = FirebaseStorage;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		D816794F2A2587030005B7CE /* CardImageModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				D81679502A2587030005B7CE /* CardImageModel.xcdatamodel */,
+			);
+			currentVersion = D81679502A2587030005B7CE /* CardImageModel.xcdatamodel */;
+			path = CardImageModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = D882271C29FCD47700698EAE /* Project object */;
 }

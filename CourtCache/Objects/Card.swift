@@ -15,6 +15,7 @@ class Card: NSObject, Codable {
     var player: String?
     var team: String?
     var year: String?
+    var rookie: Bool?
     var set: String?
     var variant: String?
     var numbered: Bool?
@@ -24,12 +25,14 @@ class Card: NSObject, Codable {
     var graded: Bool?
     var grade: String?
     var imageURL: String?
+    var imagePath: String?
     
     enum CodingKeys: String, CodingKey {
         case id
         case player
         case team
         case year
+        case rookie
         case set
         case variant
         case numbered
@@ -39,5 +42,6 @@ class Card: NSObject, Codable {
         case graded
         case grade
         case imageURL
+        case imagePath
     }
 }
