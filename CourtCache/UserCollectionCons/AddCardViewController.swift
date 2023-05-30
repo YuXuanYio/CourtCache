@@ -34,7 +34,11 @@ class AddCardViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     @IBAction func addCardPressed(_ sender: Any) {
         activityIndicator.startAnimating()
-        if cardImageView.image == UIImage(named: "tapToAddPhoto") {
+        guard let image = cardImageView.image, let placeholderImage = UIImage(named: "tapToAddPhoto"),
+              let imageData = image.jpegData(compressionQuality: 1.0),
+              let placeholderImageData = placeholderImage.jpegData(compressionQuality: 1.0),
+              imageData != placeholderImageData else {
+            self.activityIndicator.stopAnimating()
             displayMessage(title: "Error", message: "Please provide an image of the card")
             return
         }
@@ -44,22 +48,27 @@ class AddCardViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         guard let player = playerTextField.text else {
             displayMessage(title: "Error", message: "Please enter a valid player")
+            self.activityIndicator.stopAnimating()
             return
         }
         guard let team = teamTextField.text else {
             displayMessage(title: "Error", message: "Please enter a valid team")
+            self.activityIndicator.stopAnimating()
             return
         }
         guard let year = yearTextField.text else {
             displayMessage(title: "Error", message: "Please enter a valid year")
+            self.activityIndicator.stopAnimating()
             return
         }
         guard let set = setTextField.text else {
             displayMessage(title: "Error", message: "Please enter a valid set")
+            self.activityIndicator.stopAnimating()
             return
         }
         guard let variant = variantTextField.text else {
             displayMessage(title: "Error", message: "Please enter a valid variant")
+            self.activityIndicator.stopAnimating()
             return
         }
         var numbered = false, auto = false, patch = false, graded = false, rookie = false

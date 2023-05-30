@@ -16,26 +16,37 @@ class LoginViewController: UIViewController {
     var appDelegate = {
         return UIApplication.shared.delegate as! AppDelegate
     }()
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
     @IBAction func loginPressed(_ sender: Any) {
+        activityIndicator.startAnimating()
         guard let password = passwordTextField.text else {
             displayMessage(title: "Error", message: "Please enter a password")
+            self.activityIndicator.stopAnimating()
             return
         }
         guard let email = emailTextField.text else {
             displayMessage(title: "Error", message: "Please enter an email")
+            self.activityIndicator.stopAnimating()
             return
         }
         auth.signIn(withEmail: email, password: password) {
             (user, error) in
             if let error = error {
                 self.displayMessage(title: "Error", message: error.localizedDescription)
+                self.activityIndicator.stopAnimating()
+                return
             }
         }
-        self.performSegue(withIdentifier: "toMainSegue", sender: nil)
+        self.databaseController?.setUpCardsListener()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.activityIndicator.stopAnimating()
+//            self.performSegue(withIdentifier: "toMainSegue", sender: nil)
+        }
+        
     }
     
     override func viewDidLoad() {
@@ -44,6 +55,10 @@ class LoginViewController: UIViewController {
         emailTextField.delegate = self
         passwordTextField.delegate = self
         hideKeyboardWhenTappedAround()
+        activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        self.view.addSubview(activityIndicator)
     }
     
     override func viewWillAppear(_ animated: Bool) {
