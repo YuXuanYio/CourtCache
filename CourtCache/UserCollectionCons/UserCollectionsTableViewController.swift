@@ -58,6 +58,10 @@ class UserCollectionsTableViewController: UITableViewController, DatabaseListene
         tableView.reloadData()
     }
     
+    func onUserValueChange(change: DatabaseChange, user: User) {
+        return
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         databaseController?.addListener(listener: self)

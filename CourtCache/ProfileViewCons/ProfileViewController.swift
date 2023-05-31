@@ -8,14 +8,17 @@
 import UIKit
 import FirebaseAuth
 
-class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, DatabaseListener {
     
+    var listenerType: ListenerType = .user
     var authHandle: AuthStateDidChangeListenerHandle?
     weak var databaseController: DatabaseProtocol?
     var appDelegate = {
         return UIApplication.shared.delegate as! AppDelegate
     }()
     var userDetails: User?
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+    var updateTimer: Timer?
 
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var usernameTextField: UITextField!
@@ -61,18 +64,67 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     override func viewDidLoad() {
-        super.viewDidLoad()
         databaseController = appDelegate.databaseController
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Profile"
         profileImageView.layer.cornerRadius = profileImageView.frame.size.width / 2
         profileImageView.clipsToBounds = true
+        emailTextField.isUserInteractionEnabled = false
+        usernameTextField.isUserInteractionEnabled = false
+// Commented out because user can't edit profile yet
+//        emailTextField.delegate = self
+//        usernameTextField.delegate = self
+//        hideKeyboardWhenTappedAround()
+        activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        super.viewDidLoad()
+//        updateTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(updateUserData), userInfo: nil, repeats: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        if userDetails == nil {
-            userDetails = databaseController?.currentUserProfile
-            print(userDetails)
+        super.viewWillAppear(animated)
+        databaseController?.addListener(listener: self)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        updateTimer?.invalidate()
+        updateTimer = nil
+        databaseController?.removeListener(listener: self)
+    }
+    
+    func onCardsChange(change: DatabaseChange, cards: [Card]) {
+        return
+    }
+    
+    func onUserValueChange(change: DatabaseChange, user: User) {
+        userDetails = user
+        reloadData()
+    }
+    
+    
+//    @objc func updateUserData() {
+//        // Fetch the user data and update the view
+//        if userDetails == nil {
+//            userDetails = databaseController?.currentUserProfile
+//            self.reloadData()
+//        } else {
+//            // If userDetails is not nil, stop the timer
+//            updateTimer?.invalidate()
+//            updateTimer = nil
+//        }
+//    }
+    
+    func reloadData() {
+        if let totalCards = userDetails?.totalCards, let rookies = userDetails?.rookies, let autos = userDetails?.autos, let slabs = userDetails?.slabs, let email = userDetails?.email, let username = userDetails?.username {
+            emailTextField.text = email
+            usernameTextField.text = username
+            
+            totalCardsLabel.text = String(totalCards)
+            rookiesLabel.text = String(rookies)
+            autosLabel.text = String(autos)
+            slabsLabel.text = String(slabs)
+            
         }
     }
     

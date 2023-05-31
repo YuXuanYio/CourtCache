@@ -22,7 +22,7 @@ class FirebaseController: NSObject, DatabaseProtocol {
     var cardList: [Card]
     var cardRef: CollectionReference?
     var managedObjectContext: NSManagedObjectContext?
-    var currentUserProfile: User?
+    var currentUserProfile: User
 
 
     override init() {
@@ -30,7 +30,7 @@ class FirebaseController: NSObject, DatabaseProtocol {
         database = Firestore.firestore()
         usersRef = database.collection("users")
         cardList = [Card]()
-        
+        currentUserProfile = User()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         managedObjectContext = appDelegate.persistentContainer?.viewContext
 
@@ -46,6 +46,9 @@ class FirebaseController: NSObject, DatabaseProtocol {
 
         if listener.listenerType == .cards || listener.listenerType == .all {
             listener.onCardsChange(change: .update, cards: cardList)
+        }
+        if listener.listenerType == .user || listener.listenerType == .all {
+            listener.onUserValueChange(change: .update, user: currentUserProfile)
         }
     }
     
@@ -90,7 +93,6 @@ class FirebaseController: NSObject, DatabaseProtocol {
         card.patch = patch
         card.graded = graded
         card.grade = grade
-        // NOTE: Add uniqueID path of image to card and try storing into coredata again. 
         
         let uniqueID = UUID().uuidString
         let storageRef = Storage.storage().reference().child("images/\(uid)/\(uniqueID).jpg")
@@ -118,6 +120,7 @@ class FirebaseController: NSObject, DatabaseProtocol {
                 // Then, save the card to Firestore.
                 do {
                     try self.usersRef?.document(uid).collection("cards").document(uniqueID).setData(from: card)
+                    self.updateUserDetails(card: card)
                 } catch {
                     print("Failed to serialise card")
                 }
@@ -143,8 +146,38 @@ class FirebaseController: NSObject, DatabaseProtocol {
         }
     }
     
-    func updateUserDetails() {
+    func updateUserDetails(card: Card) {
+        guard let userId = currentUser?.uid else { return }
+        let totalCards = (currentUserProfile.totalCards ?? 0) + 1
+        var rookies: Int = 0
+        var autos: Int = 0
+        var slabs: Int = 0
         
+        if card.rookie ?? false {
+            rookies = (currentUserProfile.rookies ?? 0) + 1
+        } else {
+            rookies = (currentUserProfile.rookies ?? 0)
+        }
+        
+        if card.auto ?? false {
+            autos = (currentUserProfile.autos ?? 0) + 1
+        } else {
+            autos = (currentUserProfile.autos ?? 0)
+        }
+        
+        if card.graded ?? false {
+            slabs = (currentUserProfile.slabs ?? 0) + 1
+        } else {
+            autos = (currentUserProfile.autos ?? 0)
+        }
+        
+        let userRef = database.collection("users").document(userId)
+        userRef.updateData([
+            "totalCards": totalCards,
+            "rookies": rookies,
+            "autos": autos,
+            "slabs": slabs
+        ])
     }
     
     func getUserDetails() {
@@ -160,6 +193,12 @@ class FirebaseController: NSObject, DatabaseProtocol {
                 }
             } else {
                 print("Document does not exist")
+            }
+        }
+        listeners.invoke {
+            (listener) in
+            if listener.listenerType == ListenerType.user || listener.listenerType == ListenerType.all {
+                listener.onUserValueChange(change: .update, user: currentUserProfile)
             }
         }
     }

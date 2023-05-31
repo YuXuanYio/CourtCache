@@ -19,16 +19,18 @@ enum DatabaseChange {
 enum ListenerType {
     case all
     case cards
+    case user
 }
 
 protocol DatabaseListener: AnyObject {
     var listenerType: ListenerType {get set}
     func onCardsChange(change: DatabaseChange, cards: [Card])
+    func onUserValueChange(change: DatabaseChange, user: User)
 }
 
 protocol DatabaseProtocol: AnyObject {
     var currentUser: FirebaseAuth.User? {get set}
-    var currentUserProfile: User? {get set}
+    var currentUserProfile: User {get set}
     func cleanup()
     func addListener(listener: DatabaseListener)
     func removeListener(listener: DatabaseListener)
