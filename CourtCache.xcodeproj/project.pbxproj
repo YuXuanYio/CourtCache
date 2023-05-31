@@ -31,7 +31,6 @@
 		D8CAE9A52A22550C0029C9FD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CAE9A42A22550C0029C9FD /* LoginViewController.swift */; };
 		D8CAE9A92A22575A0029C9FD /* DatabaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CAE9A82A22575A0029C9FD /* DatabaseProtocol.swift */; };
 		D8CAE9AC2A2258010029C9FD /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CAE9AB2A2258010029C9FD /* Card.swift */; };
-		D8CAE9AE2A225C130029C9FD /* Sets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CAE9AD2A225C130029C9FD /* Sets.swift */; };
 		D8CAE9B02A225FA80029C9FD /* UIViewConExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CAE9AF2A225FA80029C9FD /* UIViewConExtension.swift */; };
 		D8EF797E2A2321BF006A9D16 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8EF797D2A2321BF006A9D16 /* SignUpViewController.swift */; };
 		D8EF79802A23440A006A9D16 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8EF797F2A23440A006A9D16 /* User.swift */; };
@@ -63,7 +62,6 @@
 		D8CAE9A42A22550C0029C9FD /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		D8CAE9A82A22575A0029C9FD /* DatabaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseProtocol.swift; sourceTree = "<group>"; };
 		D8CAE9AB2A2258010029C9FD /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
-		D8CAE9AD2A225C130029C9FD /* Sets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sets.swift; sourceTree = "<group>"; };
 		D8CAE9AF2A225FA80029C9FD /* UIViewConExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewConExtension.swift; sourceTree = "<group>"; };
 		D8EF797D2A2321BF006A9D16 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		D8EF797F2A23440A006A9D16 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -151,7 +149,6 @@
 			isa = PBXGroup;
 			children = (
 				D8CAE9AB2A2258010029C9FD /* Card.swift */,
-				D8CAE9AD2A225C130029C9FD /* Sets.swift */,
 				D8EF797F2A23440A006A9D16 /* User.swift */,
 			);
 			path = Objects;
@@ -280,7 +277,6 @@
 				D81679552A258B590005B7CE /* CardImageMetaData+CoreDataProperties.swift in Sources */,
 				D8EF798A2A244608006A9D16 /* UserCollectionsTableViewController.swift in Sources */,
 				D882272829FCD47700698EAE /* AppDelegate.swift in Sources */,
-				D8CAE9AE2A225C130029C9FD /* Sets.swift in Sources */,
 				D882274929FD5FCA00698EAE /* TeamsCollectionViewCell.swift in Sources */,
 				D8CAE9A52A22550C0029C9FD /* LoginViewController.swift in Sources */,
 				D8EF79802A23440A006A9D16 /* User.swift in Sources */,

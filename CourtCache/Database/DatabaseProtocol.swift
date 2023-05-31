@@ -28,11 +28,12 @@ protocol DatabaseListener: AnyObject {
 
 protocol DatabaseProtocol: AnyObject {
     var currentUser: FirebaseAuth.User? {get set}
+    var currentUserProfile: User? {get set}
     func cleanup()
     func addListener(listener: DatabaseListener)
     func removeListener(listener: DatabaseListener)
     func createUser(username: String, email: String, firebaseUser: FirebaseAuth.User)
     func addUserCard(player: String, team: String, year: String, rookie: Bool, set: String, variant: String, numbered: Bool, number: String, auto: Bool, patch: Bool, graded: Bool?, grade: String?, imageData: Data)
-    func addUserCardImageToCoreData(imagePath: String, imageData: Data, uid: String) 
+    func addUserCardImageToCoreData(imagePath: String, imageData: Data, uid: String)
     func setUpCardsListener()
 }

@@ -13,5 +13,19 @@ class User: NSObject, Codable {
     @DocumentID var id: String?
     var username: String?
     var email: String?
+    var totalCards: Int?
+    var rookies: Int?
+    var autos: Int?
+    var slabs: Int?
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case username
+        case email
+        case totalCards
+        case rookies
+        case autos
+        case slabs
+    }
     
 }

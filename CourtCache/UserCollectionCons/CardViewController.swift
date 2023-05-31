@@ -13,14 +13,22 @@ class CardViewController: UIViewController {
     var cardImage: UIImage = UIImage()
     
     @IBOutlet weak var cardImageView: UIImageView!
-    @IBOutlet weak var cardDetailsLabel: UILabel!
-
+    @IBOutlet weak var cardDetailsTextView: UITextView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Card Details"
+        cardDetailsTextView.isUserInteractionEnabled = false
         cardImageView.image = cardImage
-        cardDetailsLabel.text = card.player
+        cardDetailsTextView.text = card.year! + " " + card.player!
+        if card.rookie == true {
+            cardDetailsTextView.text += " Rookie"
+        }
+        cardDetailsTextView.text += " " + card.set! + " " + card.variant!
+        if card.graded == true {
+            cardDetailsTextView.text += "\n\nGrade: " + card.grade!
+        }
         // Do any additional setup after loading the view.
     }
     

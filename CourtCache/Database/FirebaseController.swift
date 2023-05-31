@@ -22,6 +22,8 @@ class FirebaseController: NSObject, DatabaseProtocol {
     var cardList: [Card]
     var cardRef: CollectionReference?
     var managedObjectContext: NSManagedObjectContext?
+    var currentUserProfile: User?
+
 
     override init() {
         FirebaseApp.configure()
@@ -55,6 +57,10 @@ class FirebaseController: NSObject, DatabaseProtocol {
         let user = User()
         user.username = username
         user.email = email
+        user.totalCards = 0
+        user.rookies = 0
+        user.autos = 0
+        user.slabs = 0
         
         let userRef = usersRef?.document(firebaseUser.uid)
         
@@ -137,6 +143,27 @@ class FirebaseController: NSObject, DatabaseProtocol {
         }
     }
     
+    func updateUserDetails() {
+        
+    }
+    
+    func getUserDetails() {
+        let userRef = database.collection("users").document(currentUser?.uid ?? "")
+        userRef.getDocument {
+            (document, error) in
+            if let document = document, document.exists {
+                do {
+                    let data = try document.data(as: User.self)
+                    self.currentUserProfile = data
+                } catch {
+                    print("Document exist but cannot be parsed into a User")
+                }
+            } else {
+                print("Document does not exist")
+            }
+        }
+    }
+    
     func setUpCardsListener() {
         guard let uid = currentUser?.uid else {
             return
@@ -149,6 +176,7 @@ class FirebaseController: NSObject, DatabaseProtocol {
                 return
             }
             self.parseCardsSnapshot(snapshot: querySnapshot)
+            self.getUserDetails()
         }
     }
     

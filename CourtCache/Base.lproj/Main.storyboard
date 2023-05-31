@@ -321,7 +321,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="R6w-B0-bds">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="R6w-B0-bds">
                                 <rect key="frame" x="121.66666666666669" y="113.99999999999999" width="150" height="148.66666666666669"/>
                                 <color key="tintColor" systemColor="systemGrayColor"/>
                                 <constraints>
@@ -537,26 +537,31 @@
                                     <constraint firstAttribute="width" constant="200" id="iAJ-Di-rsf"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tOz-wO-hEL">
-                                <rect key="frame" x="20" y="393" width="52" height="26.333333333333314"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="HVQ-8e-ziy">
+                                <rect key="frame" x="20" y="383" width="353" height="130"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="130" id="E6v-t9-62i"/>
+                                </constraints>
+                                <color key="textColor" systemColor="labelColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="tDd-9X-L12"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <color key="tintColor" systemColor="systemOrangeColor"/>
                         <constraints>
-                            <constraint firstItem="tOz-wO-hEL" firstAttribute="top" secondItem="dpY-RR-P89" secondAttribute="bottom" constant="40" id="BPn-bS-InN"/>
                             <constraint firstItem="dpY-RR-P89" firstAttribute="top" secondItem="tDd-9X-L12" secondAttribute="top" id="Jee-3c-fUx"/>
-                            <constraint firstItem="tOz-wO-hEL" firstAttribute="leading" secondItem="tDd-9X-L12" secondAttribute="leading" constant="20" id="Nxn-MC-wp2"/>
+                            <constraint firstItem="HVQ-8e-ziy" firstAttribute="leading" secondItem="tDd-9X-L12" secondAttribute="leading" constant="20" id="NlS-8F-75J"/>
                             <constraint firstItem="dpY-RR-P89" firstAttribute="centerX" secondItem="tDd-9X-L12" secondAttribute="centerX" id="RRu-Y2-qRh"/>
+                            <constraint firstItem="tDd-9X-L12" firstAttribute="trailing" secondItem="HVQ-8e-ziy" secondAttribute="trailing" constant="20" id="c16-sm-i8x"/>
+                            <constraint firstItem="HVQ-8e-ziy" firstAttribute="top" secondItem="dpY-RR-P89" secondAttribute="bottom" constant="30" id="l82-Wo-fcN"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="na7-IV-iQ8"/>
                     <connections>
-                        <outlet property="cardDetailsLabel" destination="tOz-wO-hEL" id="Cko-nc-gbs"/>
+                        <outlet property="cardDetailsTextView" destination="HVQ-8e-ziy" id="1i1-Ou-q9y"/>
                         <outlet property="cardImageView" destination="dpY-RR-P89" id="yyw-cg-Hgl"/>
                     </connections>
                 </viewController>
@@ -995,7 +1000,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="O3p-RY-o6q"/>
+        <segue reference="veB-6G-4RA"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="CourtCache Logo" width="100" height="50"/>
@@ -1006,6 +1011,9 @@
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="star.fill" catalog="system" width="128" height="116"/>
         <image name="tapToAddPhoto" width="200" height="250"/>
+        <systemColor name="labelColor">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
