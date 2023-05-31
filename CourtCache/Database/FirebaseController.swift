@@ -131,8 +131,21 @@ class FirebaseController: NSObject, DatabaseProtocol {
     }
     
     func deleteCard(card: Card) {
-        if let uid = currentUser?.uid, let uniqueID = card.uniqueID {
+        if let uid = currentUser?.uid, let uniqueID = card.uniqueID, let imageURL = card.imageURL {
             try self.usersRef?.document(uid).collection("cards").document(uniqueID).delete()
+            let storage = Storage.storage()
+            let storageRef = storage.reference(forURL: imageURL)
+
+            // Delete the file
+            storageRef.delete { error in
+                if let error = error {
+                    // An error occurred!
+                    print("Error deleting image: \(error)")
+                } else {
+                    // File deleted successfully
+                    print("Image deleted successfully")
+                }
+            }
             decreaseUserCardCount(card: card)
         }
     }
