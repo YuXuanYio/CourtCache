@@ -26,6 +26,7 @@ class Card: NSObject, Codable {
     var grade: String?
     var imageURL: String?
     var imagePath: String?
+    var uniqueID: String?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -43,5 +44,6 @@ class Card: NSObject, Codable {
         case grade
         case imageURL
         case imagePath
+        case uniqueID
     }
 }

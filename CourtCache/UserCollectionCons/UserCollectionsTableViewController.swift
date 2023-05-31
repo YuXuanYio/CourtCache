@@ -197,7 +197,8 @@ class UserCollectionsTableViewController: UITableViewController, DatabaseListene
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // NOTE: Delete from database!!! Find out how to clear the firebase photo as well.
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            let card = searchedCollection[indexPath.section].2[indexPath.row]
+            databaseController?.deleteCard(card: card)
         }
     }
 

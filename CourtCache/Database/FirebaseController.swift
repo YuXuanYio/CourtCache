@@ -94,7 +94,9 @@ class FirebaseController: NSObject, DatabaseProtocol {
         card.graded = graded
         card.grade = grade
         
+        
         let uniqueID = UUID().uuidString
+        card.uniqueID = uniqueID
         let storageRef = Storage.storage().reference().child("images/\(uid)/\(uniqueID).jpg")
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpeg"
@@ -120,11 +122,18 @@ class FirebaseController: NSObject, DatabaseProtocol {
                 // Then, save the card to Firestore.
                 do {
                     try self.usersRef?.document(uid).collection("cards").document(uniqueID).setData(from: card)
-                    self.updateUserDetails(card: card)
+                    self.increaseUserCardCount(card: card)
                 } catch {
                     print("Failed to serialise card")
                 }
             }
+        }
+    }
+    
+    func deleteCard(card: Card) {
+        if let uid = currentUser?.uid, let uniqueID = card.uniqueID {
+            try self.usersRef?.document(uid).collection("cards").document(uniqueID).delete()
+            decreaseUserCardCount(card: card)
         }
     }
     
@@ -146,7 +155,7 @@ class FirebaseController: NSObject, DatabaseProtocol {
         }
     }
     
-    func updateUserDetails(card: Card) {
+    func increaseUserCardCount(card: Card) {
         guard let userId = currentUser?.uid else { return }
         let totalCards = (currentUserProfile.totalCards ?? 0) + 1
         var rookies: Int = 0
@@ -167,6 +176,40 @@ class FirebaseController: NSObject, DatabaseProtocol {
         
         if card.graded ?? false {
             slabs = (currentUserProfile.slabs ?? 0) + 1
+        } else {
+            autos = (currentUserProfile.autos ?? 0)
+        }
+        
+        let userRef = database.collection("users").document(userId)
+        userRef.updateData([
+            "totalCards": totalCards,
+            "rookies": rookies,
+            "autos": autos,
+            "slabs": slabs
+        ])
+    }
+    
+    func decreaseUserCardCount(card: Card) {
+        guard let userId = currentUser?.uid else { return }
+        let totalCards = (currentUserProfile.totalCards ?? 0) - 1
+        var rookies: Int = 0
+        var autos: Int = 0
+        var slabs: Int = 0
+        
+        if card.rookie ?? false {
+            rookies = (currentUserProfile.rookies ?? 0) - 1
+        } else {
+            rookies = (currentUserProfile.rookies ?? 0)
+        }
+        
+        if card.auto ?? false {
+            autos = (currentUserProfile.autos ?? 0) - 1
+        } else {
+            autos = (currentUserProfile.autos ?? 0)
+        }
+        
+        if card.graded ?? false {
+            slabs = (currentUserProfile.slabs ?? 0) - 1
         } else {
             autos = (currentUserProfile.autos ?? 0)
         }
