@@ -141,9 +141,6 @@ class FirebaseController: NSObject, DatabaseProtocol {
                 if let error = error {
                     // An error occurred!
                     print("Error deleting image: \(error)")
-                } else {
-                    // File deleted successfully
-                    print("Image deleted successfully")
                 }
             }
             decreaseUserCardCount(card: card)
@@ -165,6 +162,36 @@ class FirebaseController: NSObject, DatabaseProtocol {
             try managedObjectContext?.save()
         } catch {
             print("Error storing image into local storage: \(error)")
+        }
+    }
+    
+    // MARK: To be further implemented for saving user profile pic
+    func addUserProfileImageToCoreData(imagePath: String, imageData: Data, uid: String) {
+        let pathsList = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentDirectory = pathsList[0]
+        let imageFile = documentDirectory.appendingPathComponent(imagePath)
+        let imageDirectory = imageFile.deletingLastPathComponent()
+
+        do {
+            try FileManager.default.createDirectory(at: imageDirectory, withIntermediateDirectories: true, attributes: nil)
+            try imageData.write(to: imageFile)
+            let profileImageEntity = NSEntityDescription.insertNewObject(forEntityName: "ProfileImageMetaData", into: managedObjectContext!) as! ProfileImageMetaData
+            profileImageEntity.uid = uid
+            profileImageEntity.filename = imagePath
+            try managedObjectContext?.save()
+        } catch {
+            print("Error storing image into local storage: \(error)")
+        }
+    }
+    
+    // MARK: To be further implemented for saving user profile pic
+    func updateUserProfilePic(imageURL: String, imagePath: String) {
+        if let userId = currentUser?.uid {
+            let userRef = database.collection("users").document(userId)
+            userRef.updateData([
+                "profileImageURL": imageURL,
+                "profileImagePath": imagePath
+            ])
         }
     }
     
@@ -190,7 +217,7 @@ class FirebaseController: NSObject, DatabaseProtocol {
         if card.graded ?? false {
             slabs = (currentUserProfile.slabs ?? 0) + 1
         } else {
-            autos = (currentUserProfile.autos ?? 0)
+            slabs = (currentUserProfile.slabs ?? 0)
         }
         
         let userRef = database.collection("users").document(userId)
@@ -224,7 +251,7 @@ class FirebaseController: NSObject, DatabaseProtocol {
         if card.graded ?? false {
             slabs = (currentUserProfile.slabs ?? 0) - 1
         } else {
-            autos = (currentUserProfile.autos ?? 0)
+            slabs = (currentUserProfile.slabs ?? 0)
         }
         
         let userRef = database.collection("users").document(userId)

@@ -38,5 +38,6 @@ protocol DatabaseProtocol: AnyObject {
     func addUserCard(player: String, team: String, year: String, rookie: Bool, set: String, variant: String, numbered: Bool, number: String, auto: Bool, patch: Bool, graded: Bool?, grade: String?, imageData: Data)
     func deleteCard(card: Card)
     func addUserCardImageToCoreData(imagePath: String, imageData: Data, uid: String)
+    func addUserProfileImageToCoreData(imagePath: String, imageData: Data, uid: String)
     func setUpCardsListener()
 }

@@ -27,6 +27,8 @@
 		D882274929FD5FCA00698EAE /* TeamsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D882274829FD5FCA00698EAE /* TeamsCollectionViewCell.swift */; };
 		D882274B29FD645600698EAE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D882274A29FD645600698EAE /* GoogleService-Info.plist */; };
 		D89BA76A2A262801008875A4 /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89BA7692A262801008875A4 /* CardViewController.swift */; };
+		D8B9DA532A2882BD008BC6A9 /* ProfileImageMetaData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B9DA512A2882BD008BC6A9 /* ProfileImageMetaData+CoreDataClass.swift */; };
+		D8B9DA542A2882BD008BC6A9 /* ProfileImageMetaData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B9DA522A2882BD008BC6A9 /* ProfileImageMetaData+CoreDataProperties.swift */; };
 		D8CAE9A32A2254320029C9FD /* MulticasDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CAE9A22A2254320029C9FD /* MulticasDelegate.swift */; };
 		D8CAE9A52A22550C0029C9FD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CAE9A42A22550C0029C9FD /* LoginViewController.swift */; };
 		D8CAE9A92A22575A0029C9FD /* DatabaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CAE9A82A22575A0029C9FD /* DatabaseProtocol.swift */; };
@@ -58,6 +60,8 @@
 		D882274829FD5FCA00698EAE /* TeamsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsCollectionViewCell.swift; sourceTree = "<group>"; };
 		D882274A29FD645600698EAE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D89BA7692A262801008875A4 /* CardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewController.swift; sourceTree = "<group>"; };
+		D8B9DA512A2882BD008BC6A9 /* ProfileImageMetaData+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileImageMetaData+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D8B9DA522A2882BD008BC6A9 /* ProfileImageMetaData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileImageMetaData+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D8CAE9A22A2254320029C9FD /* MulticasDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MulticasDelegate.swift; sourceTree = "<group>"; };
 		D8CAE9A42A22550C0029C9FD /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		D8CAE9A82A22575A0029C9FD /* DatabaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseProtocol.swift; sourceTree = "<group>"; };
@@ -130,6 +134,8 @@
 				D882274629FD56BD00698EAE /* FirebaseController.swift */,
 				D8CAE9A82A22575A0029C9FD /* DatabaseProtocol.swift */,
 				D816794F2A2587030005B7CE /* CardImageModel.xcdatamodeld */,
+				D8B9DA512A2882BD008BC6A9 /* ProfileImageMetaData+CoreDataClass.swift */,
+				D8B9DA522A2882BD008BC6A9 /* ProfileImageMetaData+CoreDataProperties.swift */,
 				D81679532A258B590005B7CE /* CardImageMetaData+CoreDataProperties.swift */,
 				D81679522A258B590005B7CE /* CardImageMetaData+CoreDataClass.swift */,
 			);
@@ -280,6 +286,7 @@
 				D882274929FD5FCA00698EAE /* TeamsCollectionViewCell.swift in Sources */,
 				D8CAE9A52A22550C0029C9FD /* LoginViewController.swift in Sources */,
 				D8EF79802A23440A006A9D16 /* User.swift in Sources */,
+				D8B9DA542A2882BD008BC6A9 /* ProfileImageMetaData+CoreDataProperties.swift in Sources */,
 				D8CAE9A32A2254320029C9FD /* MulticasDelegate.swift in Sources */,
 				D8EF79862A24449E006A9D16 /* AddCardViewController.swift in Sources */,
 				D81679542A258B590005B7CE /* CardImageMetaData+CoreDataClass.swift in Sources */,
@@ -290,6 +297,7 @@
 				D8CAE9B02A225FA80029C9FD /* UIViewConExtension.swift in Sources */,
 				D89BA76A2A262801008875A4 /* CardViewController.swift in Sources */,
 				D882272A29FCD47700698EAE /* SceneDelegate.swift in Sources */,
+				D8B9DA532A2882BD008BC6A9 /* ProfileImageMetaData+CoreDataClass.swift in Sources */,
 				D8EF79842A23953F006A9D16 /* ProfileViewController.swift in Sources */,
 				D816794A2A24800D0005B7CE /* HardCodedDetails.swift in Sources */,
 				D8EF797E2A2321BF006A9D16 /* SignUpViewController.swift in Sources */,

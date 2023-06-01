@@ -17,6 +17,8 @@ class User: NSObject, Codable {
     var rookies: Int?
     var autos: Int?
     var slabs: Int?
+    var profileImageURL: String?
+    var profileImagePath: String?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -26,6 +28,8 @@ class User: NSObject, Codable {
         case rookies
         case autos
         case slabs
+        case profileImageURL
+        case profileImagePath
     }
     
 }

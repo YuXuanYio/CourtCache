@@ -79,7 +79,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
         super.viewDidLoad()
-//        updateTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(updateUserData), userInfo: nil, repeats: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -101,19 +100,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         userDetails = user
         reloadData()
     }
-    
-    
-//    @objc func updateUserData() {
-//        // Fetch the user data and update the view
-//        if userDetails == nil {
-//            userDetails = databaseController?.currentUserProfile
-//            self.reloadData()
-//        } else {
-//            // If userDetails is not nil, stop the timer
-//            updateTimer?.invalidate()
-//            updateTimer = nil
-//        }
-//    }
     
     func reloadData() {
         if let totalCards = userDetails?.totalCards, let rookies = userDetails?.rookies, let autos = userDetails?.autos, let slabs = userDetails?.slabs, let email = userDetails?.email, let username = userDetails?.username {

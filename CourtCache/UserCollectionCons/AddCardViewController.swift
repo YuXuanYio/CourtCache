@@ -31,8 +31,10 @@ class AddCardViewController: UIViewController, UIImagePickerControllerDelegate, 
     @IBOutlet weak var patchSegmentedControl: UISegmentedControl!
     @IBOutlet weak var gradedSegmentedControl: UISegmentedControl!
     @IBOutlet weak var gradedTextField: UITextField!
+    @IBOutlet weak var addCardButton: UIButton!
     
     @IBAction func addCardPressed(_ sender: Any) {
+        addCardButton.isEnabled = false
         activityIndicator.startAnimating()
         guard let image = cardImageView.image, let placeholderImage = UIImage(named: "tapToAddPhoto"),
               let imageData = image.jpegData(compressionQuality: 1.0),
@@ -89,12 +91,13 @@ class AddCardViewController: UIViewController, UIImagePickerControllerDelegate, 
         }
         if gradedSegmentedControl.selectedSegmentIndex != NO {
             graded = true
-            grade = gradedTextField.text ?? "-"
+            grade = addSpaceBetweenLettersAndNumbers(in: gradedTextField.text ?? "-")
         }
         
         databaseController?.addUserCard(player: player, team: team, year: year, rookie: rookie, set: set, variant: variant, numbered: numbered, number: number, auto: auto, patch: patch, graded: graded, grade: grade, imageData: imageData)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
             self.activityIndicator.stopAnimating()
+            self.addCardButton.isEnabled = true
             self.navigationController?.popViewController(animated: true)
         }
     }
@@ -237,6 +240,14 @@ class AddCardViewController: UIViewController, UIImagePickerControllerDelegate, 
             }
         }
         return false
+    }
+    
+    func addSpaceBetweenLettersAndNumbers(in text: String) -> String {
+        let pattern = "([a-zA-Z]+)(\\d+)"
+        let regex = try? NSRegularExpression(pattern: pattern, options: [])
+        let range = NSRange(location: 0, length: text.count)
+        let modifiedString = regex?.stringByReplacingMatches(in: text, options: [], range: range, withTemplate: "$1 $2")
+        return modifiedString ?? text
     }
 
 
