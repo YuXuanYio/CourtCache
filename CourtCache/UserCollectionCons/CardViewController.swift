@@ -52,7 +52,6 @@ class CardViewController: UIViewController {
             lastSoldURL += "+" + grade
         }
         lastSoldURL += "&LH_Complete=1&LH_Sold=1"
-        print(lastSoldURL)
     }
     
     func replaceSpacesWithPlus(in text: String) -> String {

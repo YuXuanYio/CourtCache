@@ -287,6 +287,7 @@ class FirebaseController: NSObject, DatabaseProtocol {
     }
     
     func setUpCardsListener() {
+        cardList = []
         guard let uid = currentUser?.uid else {
             return
         }
@@ -297,6 +298,7 @@ class FirebaseController: NSObject, DatabaseProtocol {
                 print("Failed to fetch documents with error: \(String(describing: error))")
                 return
             }
+            print(querySnapshot.count)
             self.parseCardsSnapshot(snapshot: querySnapshot)
             self.getUserDetails()
         }

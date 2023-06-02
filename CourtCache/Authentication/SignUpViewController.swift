@@ -54,6 +54,7 @@ class SignUpViewController: UIViewController {
         passwordTextField.delegate = self
         hideKeyboardWhenTappedAround()
         // Do any additional setup after loading the view.
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
 

@@ -141,44 +141,58 @@ class UserCollectionsTableViewController: UITableViewController, DatabaseListene
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return searchedCollection.count
+        if cardList.count > 0 {
+            return searchedCollection.count
+        } else {
+            return 1
+        }
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return searchedCollection[section].1
+        if cardList.count > 0 {
+            return searchedCollection[section].1
+        } else {
+            return 1
+        }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: CELL_CARD, for: indexPath) as! UserCollectionTableViewCell
-        let card = searchedCollection[indexPath.section].2[indexPath.row]
-        cell.yearLabel.text = card.year
-        cell.playerNameLabel.text = card.player
-        cell.setLabel.text = "\(String(describing: card.set!))" + ", " + "\(String(describing: card.variant!))"
-        cell.cardCellImageView.image = nil
-        Task {
-            DispatchQueue.main.async {
-                self.activityIndicator.startAnimating()
+        if cardList.count > 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: CELL_CARD, for: indexPath) as! UserCollectionTableViewCell
+            let card = searchedCollection[indexPath.section].2[indexPath.row]
+            cell.yearLabel.text = card.year
+            cell.playerNameLabel.text = card.player
+            cell.setLabel.text = "\(String(describing: card.set!))" + ", " + "\(String(describing: card.variant!))"
+            cell.cardCellImageView.image = nil
+            Task {
+                DispatchQueue.main.async {
+                    self.activityIndicator.startAnimating()
+                }
+                let image = await loadImageData(card: card)
+                DispatchQueue.main.async {
+                    self.activityIndicator.stopAnimating()
+                    // Check if this cell is still being used for the same index path
+                    guard let currentIndexPath = tableView.indexPath(for: cell), currentIndexPath == indexPath else { return }
+                    cell.cardCellImageView.image = image
+                }
             }
-            let image = await loadImageData(card: card)
-            DispatchQueue.main.async {
-                self.activityIndicator.stopAnimating()
-                // Check if this cell is still being used for the same index path
-                guard let currentIndexPath = tableView.indexPath(for: cell), currentIndexPath == indexPath else { return }
-                cell.cardCellImageView.image = image
+            guard let graded = card.graded else {
+                cell.gradeLabel.text = "Error getting grade"
+                return cell
             }
-        }
-        guard let graded = card.graded else {
-            cell.gradeLabel.text = "Error getting grade"
+            if graded {
+                cell.gradeLabel.text = card.grade
+            } else {
+                cell.gradeLabel.text = "Raw"
+            }
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "emptyCell", for: indexPath)
+            var content = cell.defaultContentConfiguration()
+            content.text = "No cards in your collection. Add some!"
+            cell.contentConfiguration = content
             return cell
         }
-        if graded {
-            cell.gradeLabel.text = card.grade
-        } else {
-            cell.gradeLabel.text = "Raw"
-        }
-        return cell
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -186,12 +200,17 @@ class UserCollectionsTableViewController: UITableViewController, DatabaseListene
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return searchedCollection[section].0
+        if cardList.count > 0 {
+            return searchedCollection[section].0
+        }
+        return ""
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+        if cardList.count > 0 {
+            return true
+        }
+        return false
     }
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -203,7 +222,9 @@ class UserCollectionsTableViewController: UITableViewController, DatabaseListene
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "viewCardSegue", sender: nil)
+        if cardList.count > 0 {
+            performSegue(withIdentifier: "viewCardSegue", sender: nil)
+        }
     }
 
     // MARK: - Navigation
