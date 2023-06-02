@@ -164,12 +164,14 @@ class FirebaseController: NSObject, DatabaseProtocol {
         }
     }
     
-    func updateUserUsername(username: String) {
+    func updateUserUsername(username: String, completion: @escaping (Error?) -> Void) {
         if let userId = currentUser?.uid {
             let userRef = database.collection("users").document(userId)
-            userRef.updateData([
-                "username": username,
-            ])
+            userRef.updateData(["username": username]) { error in
+                completion(error)
+            }
+        } else {
+            completion(NSError(domain: "", code: -1, userInfo: ["description": "No current user"]))
         }
     }
     
@@ -241,26 +243,50 @@ class FirebaseController: NSObject, DatabaseProtocol {
         ])
     }
     
-    func getUserDetails() {
-        let userRef = database.collection("users").document(currentUser?.uid ?? "")
-        userRef.getDocument {
-            (document, error) in
-            if let document = document, document.exists {
-                do {
-                    let data = try document.data(as: User.self)
-                    self.currentUserProfile = data
-                } catch {
-                    print("Document exist but cannot be parsed into a User")
-                }
-            } else {
-                print("Document does not exist")
-            }
+//    func getUserDetails() {
+//        let userRef = database.collection("users").document(currentUser?.uid ?? "")
+//        userRef.getDocument {
+//            (document, error) in
+//            if let document = document, document.exists {
+//                do {
+//                    let data = try document.data(as: User.self)
+//                    self.currentUserProfile = data
+//                } catch {
+//                    print("Document exist but cannot be parsed into a User")
+//                }
+//            } else {
+//                print("Document does not exist")
+//            }
+//        }
+//        listeners.invoke {
+//            (listener) in
+//            if listener.listenerType == ListenerType.user || listener.listenerType == ListenerType.all {
+//                listener.onUserValueChange(change: .update, user: currentUserProfile)
+//            }
+//        }
+//    }
+    
+    func setUpUserListener() {
+        guard let uid = currentUser?.uid else {
+            return
         }
-        listeners.invoke {
-            (listener) in
-            if listener.listenerType == ListenerType.user || listener.listenerType == ListenerType.all {
-                listener.onUserValueChange(change: .update, user: currentUserProfile)
+        let userRef = database.collection("users").document(uid)
+        
+        userRef.addSnapshotListener { documentSnapshot, error in
+            guard let document = documentSnapshot else {
+                print("Error fetching document: \(error!)")
+                return
             }
+            guard let data = try? document.data(as: User.self) else {
+                print("Document data could not be decoded into User")
+                return
+            }
+            self.currentUserProfile = data
+            self.listeners.invoke { (listener) in
+                    if listener.listenerType == .user || listener.listenerType == .all {
+                        listener.onUserValueChange(change: .update, user: self.currentUserProfile)
+                    }
+                }
         }
     }
     
@@ -276,9 +302,7 @@ class FirebaseController: NSObject, DatabaseProtocol {
                 print("Failed to fetch documents with error: \(String(describing: error))")
                 return
             }
-            print(querySnapshot.count)
             self.parseCardsSnapshot(snapshot: querySnapshot)
-            self.getUserDetails()
         }
     }
     

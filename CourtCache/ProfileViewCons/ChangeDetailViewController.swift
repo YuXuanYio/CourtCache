@@ -17,6 +17,7 @@ class ChangeDetailViewController: UIViewController {
     var appDelegate = {
         return UIApplication.shared.delegate as! AppDelegate
     }()
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
 
     @IBOutlet weak var oldDetailLabel: UILabel!
     @IBOutlet weak var oldDetailTextField: UITextField!
@@ -45,13 +46,25 @@ class ChangeDetailViewController: UIViewController {
             guard let username = newDetailTextField.text else {
                 return
             }
-            databaseController?.updateUserUsername(username: username)
+            databaseController?.updateUserUsername(username: username) { [weak self] error in
+                self?.activityIndicator.stopAnimating()
+
+                if let error = error {
+                    self?.displayMessage(title: "Error", message: "There was an unknown error that occured. Please try again.")
+                } else {
+                    self?.displayMessageDismissAction(title: "Success", message: "Please check your new email for the confirmation")
+                }
+            }
         }
     }
     
     override func viewDidLoad() {
         databaseController = appDelegate.databaseController
         super.viewDidLoad()
+        activityIndicator.style = .large
+        activityIndicator.center = view.center
+        activityIndicator.hidesWhenStopped = true
+
         navigationController?.navigationBar.prefersLargeTitles = true
         oldDetailTextField.isUserInteractionEnabled = false
         if detailType == "Email" {

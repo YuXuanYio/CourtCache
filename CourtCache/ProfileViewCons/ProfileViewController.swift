@@ -76,6 +76,7 @@ class ProfileViewController: UIViewController, DatabaseListener {
     func onUserValueChange(change: DatabaseChange, user: User) {
         userDetails = user
         reloadData()
+
     }
     
     func reloadData() {

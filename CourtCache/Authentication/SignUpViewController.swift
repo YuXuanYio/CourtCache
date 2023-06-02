@@ -41,7 +41,6 @@ class SignUpViewController: UIViewController {
             }
             if let authResult = authResult {
                 self.databaseController?.createUser(username: username, email: email, firebaseUser: authResult.user)
-                self.performSegue(withIdentifier: "toMainSegue", sender: nil)
             }
         }
     }
@@ -57,6 +56,24 @@ class SignUpViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        authHandle = auth.addStateDidChangeListener() {
+            (auth, user) in
+            guard user != nil else {return}
+            self.databaseController?.currentUser = user
+            self.databaseController?.setUpCardsListener()
+            self.databaseController?.setUpUserListener()
+            self.performSegue(withIdentifier: "toMainSegue", sender: nil)
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        guard let authHandle = authHandle else {
+            return
+        }
+        auth.removeStateDidChangeListener(authHandle)
+    }
+
 
     /*
     // MARK: - Navigation

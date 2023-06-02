@@ -17,6 +17,28 @@ class EditProfileViewController: UIViewController, UITableViewDataSource, UITabl
     
     @IBOutlet weak var userDetailsTableView: UITableView!
     
+    @IBAction func permanentlyDeletePressed(_ sender: Any) {
+        let alertController = UIAlertController(title: "Please re-enter your password", message: "", preferredStyle: .alert)
+        alertController.addTextField { textField in
+            textField.isSecureTextEntry = true
+        }
+        let confirmAction = UIAlertAction(title: "Confirm", style: .default) { _ in
+            guard let password = alertController.textFields?.first?.text else { return }
+            let credential = EmailAuthProvider.credential(withEmail: self.currentAuthUser?.email ?? "", password: password)
+            
+            // Prompt the user for confirmation before deleting the account
+            self.currentAuthUser?.reauthenticate(with: credential) { result, error in
+                if let error = error {
+                    self.displayMessage(title: "Error", message: error.localizedDescription)
+                } else {
+                    self.displayMessageConfirmDelete(title: "WARNING", message: "This cannot be undone. Are you sure you want to permanently delete your account? All data will be lost.")
+                }
+            }
+        }
+        alertController.addAction(confirmAction)
+        present(alertController, animated: true)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         userDetailsTableView.dataSource = self
@@ -56,6 +78,38 @@ class EditProfileViewController: UIViewController, UITableViewDataSource, UITabl
         performSegue(withIdentifier: "toDetailSegue", sender: nil)
     }
     
+    func displayMessageConfirmDelete(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message,  preferredStyle: .alert)
+        let alertActionNo = UIAlertAction(title: "No", style: .default) {
+            (action) in
+            return
+        }
+        let alertActionYes = UIAlertAction(title: "Yes", style: .default) {
+            (action) in
+            self.currentAuthUser?.delete {
+                error in
+                if let error = error {
+                    print(error)
+                    self.displayMessage(title: "Error", message: error.localizedDescription)
+                } else {
+                    self.displayMessageDismissAction(title: "Sorry to see you go", message: "Thank you for being a user of this app!")
+                }
+            }
+        }
+        alertController.addAction(alertActionNo)
+        alertController.addAction(alertActionYes)
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func displayMessageDismissAction(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message,  preferredStyle: .alert)
+        let alertActionDimiss = UIAlertAction(title: "Dismiss", style: .default) {
+            (action) in
+            self.tabBarController?.navigationController?.popToRootViewController(animated: true)
+        }
+        alertController.addAction(alertActionDimiss)
+        self.present(alertController, animated: true, completion: nil)
+    }
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
