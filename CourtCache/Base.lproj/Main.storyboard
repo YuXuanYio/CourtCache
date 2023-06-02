@@ -235,7 +235,6 @@
                         <color key="selectedImageTintColor" systemColor="systemOrangeColor"/>
                     </tabBar>
                     <connections>
-                        <segue destination="A9S-Ha-qkO" kind="relationship" relationship="viewControllers" id="yP3-Gz-pPt"/>
                         <segue destination="KZI-Ru-kuy" kind="relationship" relationship="viewControllers" id="sgF-og-aKj"/>
                         <segue destination="zWz-MY-MmK" kind="relationship" relationship="viewControllers" id="Hwh-CP-yB6"/>
                     </connections>
