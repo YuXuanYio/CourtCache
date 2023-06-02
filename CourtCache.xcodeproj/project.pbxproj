@@ -30,6 +30,8 @@
 		D89BA76A2A262801008875A4 /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89BA7692A262801008875A4 /* CardViewController.swift */; };
 		D8B9DA532A2882BD008BC6A9 /* ProfileImageMetaData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B9DA512A2882BD008BC6A9 /* ProfileImageMetaData+CoreDataClass.swift */; };
 		D8B9DA542A2882BD008BC6A9 /* ProfileImageMetaData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B9DA522A2882BD008BC6A9 /* ProfileImageMetaData+CoreDataProperties.swift */; };
+		D8C2A1712A2A18050021B64A /* AccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C2A1702A2A18050021B64A /* AccountTableViewCell.swift */; };
+		D8C2A1752A2A20EE0021B64A /* ChangeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C2A1742A2A20EE0021B64A /* ChangeDetailViewController.swift */; };
 		D8CAE9A32A2254320029C9FD /* MulticasDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CAE9A22A2254320029C9FD /* MulticasDelegate.swift */; };
 		D8CAE9A52A22550C0029C9FD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CAE9A42A22550C0029C9FD /* LoginViewController.swift */; };
 		D8CAE9A92A22575A0029C9FD /* DatabaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CAE9A82A22575A0029C9FD /* DatabaseProtocol.swift */; };
@@ -64,6 +66,8 @@
 		D89BA7692A262801008875A4 /* CardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewController.swift; sourceTree = "<group>"; };
 		D8B9DA512A2882BD008BC6A9 /* ProfileImageMetaData+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileImageMetaData+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D8B9DA522A2882BD008BC6A9 /* ProfileImageMetaData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileImageMetaData+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D8C2A1702A2A18050021B64A /* AccountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTableViewCell.swift; sourceTree = "<group>"; };
+		D8C2A1742A2A20EE0021B64A /* ChangeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeDetailViewController.swift; sourceTree = "<group>"; };
 		D8CAE9A22A2254320029C9FD /* MulticasDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MulticasDelegate.swift; sourceTree = "<group>"; };
 		D8CAE9A42A22550C0029C9FD /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		D8CAE9A82A22575A0029C9FD /* DatabaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseProtocol.swift; sourceTree = "<group>"; };
@@ -196,6 +200,8 @@
 			children = (
 				D8EF79832A23953F006A9D16 /* ProfileViewController.swift */,
 				D8769E0D2A29ADFB00F6561B /* EditProfileViewController.swift */,
+				D8C2A1702A2A18050021B64A /* AccountTableViewCell.swift */,
+				D8C2A1742A2A20EE0021B64A /* ChangeDetailViewController.swift */,
 			);
 			path = ProfileViewCons;
 			sourceTree = "<group>";
@@ -294,9 +300,11 @@
 				D8EF79862A24449E006A9D16 /* AddCardViewController.swift in Sources */,
 				D81679542A258B590005B7CE /* CardImageMetaData+CoreDataClass.swift in Sources */,
 				D882273C29FD53BA00698EAE /* AllTeamsCollectionViewController.swift in Sources */,
+				D8C2A1712A2A18050021B64A /* AccountTableViewCell.swift in Sources */,
 				D8CAE9AC2A2258010029C9FD /* Card.swift in Sources */,
 				D816794E2A25796D0005B7CE /* UserCollectionTableViewCell.swift in Sources */,
 				D81679512A2587030005B7CE /* CardImageModel.xcdatamodeld in Sources */,
+				D8C2A1752A2A20EE0021B64A /* ChangeDetailViewController.swift in Sources */,
 				D8CAE9B02A225FA80029C9FD /* UIViewConExtension.swift in Sources */,
 				D89BA76A2A262801008875A4 /* CardViewController.swift in Sources */,
 				D882272A29FCD47700698EAE /* SceneDelegate.swift in Sources */,

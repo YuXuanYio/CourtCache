@@ -19,8 +19,8 @@ class ProfileViewController: UIViewController, DatabaseListener {
     var userDetails: User?
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     var updateTimer: Timer?
+    let currentAuthUser = Auth.auth().currentUser
 
-    @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
     
@@ -49,8 +49,6 @@ class ProfileViewController: UIViewController, DatabaseListener {
         databaseController = appDelegate.databaseController
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Profile"
-        profileImageView.layer.cornerRadius = profileImageView.frame.size.width / 2
-        profileImageView.clipsToBounds = true
         activityIndicator = UIActivityIndicatorView(style: .large)
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
@@ -81,8 +79,8 @@ class ProfileViewController: UIViewController, DatabaseListener {
     }
     
     func reloadData() {
-        if let totalCards = userDetails?.totalCards, let rookies = userDetails?.rookies, let autos = userDetails?.autos, let slabs = userDetails?.slabs, let email = userDetails?.email, let username = userDetails?.username {
-            emailLabel.text = email
+        if let totalCards = userDetails?.totalCards, let rookies = userDetails?.rookies, let autos = userDetails?.autos, let slabs = userDetails?.slabs, let username = userDetails?.username {
+            emailLabel.text = currentAuthUser?.email
             usernameLabel.text = username
             
             totalCardsLabel.text = String(totalCards)
@@ -112,14 +110,17 @@ class ProfileViewController: UIViewController, DatabaseListener {
         topRightView.layer.cornerRadius = 20
     }
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "editProfileSegue" {
+            let destination = segue.destination as! EditProfileViewController
+            guard let userDetails = userDetails else {
+                return
+            }
+            destination.userDetail = userDetails
+        }
     }
-    */
 
 }

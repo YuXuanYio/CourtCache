@@ -59,7 +59,6 @@ class FirebaseController: NSObject, DatabaseProtocol {
     func createUser(username: String, email: String, firebaseUser: FirebaseAuth.User) {
         let user = User()
         user.username = username
-        user.email = email
         user.totalCards = 0
         user.rookies = 0
         user.autos = 0
@@ -165,32 +164,11 @@ class FirebaseController: NSObject, DatabaseProtocol {
         }
     }
     
-    // MARK: To be further implemented for saving user profile pic
-    func addUserProfileImageToCoreData(imagePath: String, imageData: Data, uid: String) {
-        let pathsList = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let documentDirectory = pathsList[0]
-        let imageFile = documentDirectory.appendingPathComponent(imagePath)
-        let imageDirectory = imageFile.deletingLastPathComponent()
-
-        do {
-            try FileManager.default.createDirectory(at: imageDirectory, withIntermediateDirectories: true, attributes: nil)
-            try imageData.write(to: imageFile)
-            let profileImageEntity = NSEntityDescription.insertNewObject(forEntityName: "ProfileImageMetaData", into: managedObjectContext!) as! ProfileImageMetaData
-            profileImageEntity.uid = uid
-            profileImageEntity.filename = imagePath
-            try managedObjectContext?.save()
-        } catch {
-            print("Error storing image into local storage: \(error)")
-        }
-    }
-    
-    // MARK: To be further implemented for saving user profile pic
-    func updateUserProfilePic(imageURL: String, imagePath: String) {
+    func updateUserUsername(username: String) {
         if let userId = currentUser?.uid {
             let userRef = database.collection("users").document(userId)
             userRef.updateData([
-                "profileImageURL": imageURL,
-                "profileImagePath": imagePath
+                "username": username,
             ])
         }
     }

@@ -49,6 +49,14 @@ class LoginViewController: UIViewController {
         
     }
     
+    @IBAction func forgotPasswordPressed(_ sender: Any) {
+        if self.emailTextField.text == "" {
+            self.displayMessage(title: "Error", message: "Please enter an email to reset your password")
+        }
+        displayMessageConfirmForgot(title: "Confirmation of password reset", message: "An email will be sent to your email for you to reset your password")
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         databaseController = appDelegate.databaseController
@@ -79,6 +87,27 @@ class LoginViewController: UIViewController {
         auth.removeStateDidChangeListener(authHandle)
     }
     
+    func displayMessageConfirmForgot(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message,  preferredStyle: .alert)
+        let alertActionNo = UIAlertAction(title: "No", style: .default) {
+            (action) in
+            return
+        }
+        let alertActionYes = UIAlertAction(title: "Yes", style: .default) {
+            (action) in
+            self.auth.sendPasswordReset(withEmail: self.emailTextField.text ?? "test@test.com") {
+                error in
+                if let error = error {
+                    self.displayMessage(title: "Error", message: error.localizedDescription)
+                } else {
+                    self.displayMessage(title: "Success", message: "Please check your email for a link to reset your password")
+                }
+            }
+        }
+        alertController.addAction(alertActionNo)
+        alertController.addAction(alertActionYes)
+        self.present(alertController, animated: true, completion: nil)
+    }
 
     /*
     // MARK: - Navigation

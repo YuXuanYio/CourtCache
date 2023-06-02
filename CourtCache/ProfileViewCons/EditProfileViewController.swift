@@ -6,40 +6,23 @@
 //
 
 import UIKit
-
-class EditProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, DatabaseListener {
+import FirebaseAuth
+    
+class EditProfileViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, DatabaseListener {
     
     var listenerType: ListenerType = .user
+    var userDetail: User = User()
+    var defaultList = ["Email", "Username"]
+    let currentAuthUser = Auth.auth().currentUser
     
-    @IBAction func choosePhotoPressed(_ sender: Any) {
-        let imagePickerController = UIImagePickerController()
-        imagePickerController.delegate = self
-
-        let actionSheet = UIAlertController(title: "Photo Source", message: "Choose a source", preferredStyle: .actionSheet)
-
-        actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (action:UIAlertAction) in
-            if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                imagePickerController.sourceType = .camera
-                self.present(imagePickerController, animated: true, completion: nil)
-            } else {
-                print("Camera not available")
-            }
-        }))
-
-        actionSheet.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: { (action:UIAlertAction) in
-            imagePickerController.sourceType = .photoLibrary
-            self.present(imagePickerController, animated: true, completion: nil)
-        }))
-
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-
-        self.present(actionSheet, animated: true, completion: nil)
-    }
-
+    @IBOutlet weak var userDetailsTableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view.
+        userDetailsTableView.dataSource = self
+        userDetailsTableView.delegate = self
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.title = "Edit Account Details"
     }
     
     func onCardsChange(change: DatabaseChange, cards: [Card]) {
@@ -50,24 +33,41 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         return
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
-//        profileImageView.image = image
-        picker.dismiss(animated: true, completion: nil)
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
     }
-
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true, completion: nil)
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return defaultList.count
     }
-
-    /*
+        
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "detailsCell", for: indexPath) as! AccountTableViewCell
+        cell.setLabel.text = defaultList[indexPath.row]
+        if indexPath.row == 0 {
+            cell.detailsLabel.text = currentAuthUser?.email
+        } else {
+            cell.detailsLabel.text = userDetail.username
+        }
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "toDetailSegue", sender: nil)
+    }
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "toDetailSegue" {
+            if let selectedIndexPath = userDetailsTableView.indexPathForSelectedRow {
+                let destination = segue.destination as! ChangeDetailViewController
+                let detailType = defaultList[selectedIndexPath.row]
+                destination.detailType = detailType
+                destination.userDetail = userDetail
+            }
+        }
     }
-    */
 
 }
