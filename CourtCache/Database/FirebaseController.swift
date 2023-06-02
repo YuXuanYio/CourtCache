@@ -146,6 +146,58 @@ class FirebaseController: NSObject, DatabaseProtocol {
         }
     }
     
+    func deleteUser(uid: String) {
+        let storage = Storage.storage()
+        let storageRef = storage.reference()
+
+        let directoryRef = storageRef.child("images/\(uid)")
+
+        directoryRef.listAll { (result, error) in
+            if let error = error {
+                print("Error: \(error)")
+            }
+            guard let result = result else {
+                return
+            }
+            for itemRef in result.items {
+                // Delete the item
+                itemRef.delete { error in
+                    if let error = error {
+                        print("Error deleting item: \(error)")
+                    } else {
+                        print("Item successfully deleted")
+                    }
+                }
+            }
+        }
+        deleteDocumentAndSubcollections(uid: uid)
+    }
+    
+    func deleteDocumentAndSubcollections(uid: String) {
+        let docRef = usersRef?.document(uid)
+        
+        // Then delete each document in the subcollection
+        docRef?.collection("cards").getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    document.reference.delete()
+                }
+            }
+        }
+        
+        // First delete the document
+        docRef?.delete() { error in
+            if let error = error {
+                print("Error deleting document: \(error)")
+            } else {
+                print("Document successfully deleted")
+            }
+        }
+    }
+
+    
     func addUserCardImageToCoreData(imagePath: String, imageData: Data, uid: String) {
         let pathsList = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentDirectory = pathsList[0]

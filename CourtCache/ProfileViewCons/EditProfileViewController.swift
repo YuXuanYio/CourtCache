@@ -14,6 +14,10 @@ class EditProfileViewController: UIViewController, UITableViewDataSource, UITabl
     var userDetail: User = User()
     var defaultList = ["Email", "Username"]
     let currentAuthUser = Auth.auth().currentUser
+    weak var databaseController: DatabaseProtocol?
+    var appDelegate = {
+        return UIApplication.shared.delegate as! AppDelegate
+    }()
     
     @IBOutlet weak var userDetailsTableView: UITableView!
     
@@ -40,6 +44,7 @@ class EditProfileViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     override func viewDidLoad() {
+        databaseController = appDelegate.databaseController
         super.viewDidLoad()
         userDetailsTableView.dataSource = self
         userDetailsTableView.delegate = self
@@ -79,6 +84,7 @@ class EditProfileViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func displayMessageConfirmDelete(title: String, message: String) {
+        let tempUID = self.currentAuthUser?.uid
         let alertController = UIAlertController(title: title, message: message,  preferredStyle: .alert)
         let alertActionNo = UIAlertAction(title: "No", style: .default) {
             (action) in
@@ -86,6 +92,7 @@ class EditProfileViewController: UIViewController, UITableViewDataSource, UITabl
         }
         let alertActionYes = UIAlertAction(title: "Yes", style: .default) {
             (action) in
+            self.databaseController?.deleteUser(uid: tempUID ?? "")
             self.currentAuthUser?.delete {
                 error in
                 if let error = error {
