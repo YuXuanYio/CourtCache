@@ -1,16 +1,17 @@
 //
-//  AddCardViewController.swift
+//  EditCardViewController.swift
 //  CourtCache
 //
-//  Created by Yu Xuan Yio on 29/5/2023.
+//  Created by Yu Xuan Yio on 3/6/2023.
 //
 
 import UIKit
 
-class AddCardViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class EditCardViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     let NO = 0
-    let YES = 1
+    var card = Card()
+    var cardImage = UIImage()
     weak var databaseController: DatabaseProtocol?
     var appDelegate = {
         return UIApplication.shared.delegate as! AppDelegate
@@ -22,28 +23,19 @@ class AddCardViewController: UIViewController, UIImagePickerControllerDelegate, 
     @IBOutlet weak var playerTextField: UITextField!
     @IBOutlet weak var teamTextField: UITextField!
     @IBOutlet weak var yearTextField: UITextField!
-    @IBOutlet weak var rookieSegmenetedControl: UISegmentedControl!
+    @IBOutlet weak var rookieSegmentedControl: UISegmentedControl!
     @IBOutlet weak var setTextField: UITextField!
     @IBOutlet weak var variantTextField: UITextField!
     @IBOutlet weak var numberedSegmentedControl: UISegmentedControl!
     @IBOutlet weak var numberedTextField: UITextField!
     @IBOutlet weak var autoSegmentedControl: UISegmentedControl!
     @IBOutlet weak var patchSegmentedControl: UISegmentedControl!
-    @IBOutlet weak var gradedSegmentedControl: UISegmentedControl!
-    @IBOutlet weak var gradedTextField: UITextField!
-    @IBOutlet weak var addCardButton: UIButton!
-    
-    @IBAction func addCardPressed(_ sender: Any) {
-        addCardButton.isEnabled = false
+    @IBOutlet weak var gradeSegmentedControl: UISegmentedControl!
+    @IBOutlet weak var gradeTextField: UITextField!
+    @IBOutlet weak var saveDetailsButton: UIButton!
+    @IBAction func saveCardPressed(_ sender: Any) {
+        saveDetailsButton.isEnabled = false
         activityIndicator.startAnimating()
-        guard let image = cardImageView.image, let placeholderImage = UIImage(named: "tapToAddPhoto"),
-              let imageData = image.jpegData(compressionQuality: 1.0),
-              let placeholderImageData = placeholderImage.jpegData(compressionQuality: 1.0),
-              imageData != placeholderImageData else {
-            self.activityIndicator.stopAnimating()
-            displayMessage(title: "Error", message: "Please provide an image of the card")
-            return
-        }
         
         guard let image = cardImageView.image else { return }
         guard let imageData = image.jpegData(compressionQuality: 0.75) else { return }
@@ -76,7 +68,7 @@ class AddCardViewController: UIViewController, UIImagePickerControllerDelegate, 
         var numbered = false, auto = false, patch = false, graded = false, rookie = false
         var number = "-"
         var grade = "-"
-        if rookieSegmenetedControl.selectedSegmentIndex != NO {
+        if rookieSegmentedControl.selectedSegmentIndex != NO {
             rookie = true
         }
         if numberedSegmentedControl.selectedSegmentIndex != NO {
@@ -89,67 +81,94 @@ class AddCardViewController: UIViewController, UIImagePickerControllerDelegate, 
         if patchSegmentedControl.selectedSegmentIndex != NO {
             patch = true
         }
-        if gradedSegmentedControl.selectedSegmentIndex != NO {
+        if gradeSegmentedControl.selectedSegmentIndex != NO {
             graded = true
-            grade = addSpaceBetweenLettersAndNumbers(in: gradedTextField.text ?? "-")
+            grade = addSpaceBetweenLettersAndNumbers(in: gradeTextField.text ?? "-")
+        }
+
+        guard let image = cardImageView.image, let imageData = image.jpegData(compressionQuality: 1.0), let cardImageData = cardImage.jpegData(compressionQuality: 1.0), imageData != cardImageData else {
+            databaseController?.updateCard(card: card, player: player, team: team, year: year, rookie: rookie, set: set, variant: variant, numbered: numbered, number: number, auto: auto, patch: patch, graded: graded, grade: grade)
+            navigationController?.popToRootViewController(animated: true)
+            return
         }
         
+        databaseController?.deleteCard(card: card)
         databaseController?.addUserCard(player: player, team: team, year: year, rookie: rookie, set: set, variant: variant, numbered: numbered, number: number, auto: auto, patch: patch, graded: graded, grade: grade, imageData: imageData)
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
             self.activityIndicator.stopAnimating()
-            self.addCardButton.isEnabled = true
-            self.navigationController?.popViewController(animated: true)
+            self.saveDetailsButton.isEnabled = true
+            self.navigationController?.popToRootViewController(animated: true)
         }
+    }
+
+    @IBAction func choosePhotoPressed(_ sender: Any) {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = self
+
+        let actionSheet = UIAlertController(title: "Photo Source", message: "Choose a source", preferredStyle: .actionSheet)
+
+        actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (action:UIAlertAction) in
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                imagePickerController.sourceType = .camera
+                self.present(imagePickerController, animated: true, completion: nil)
+            } else {
+                print("Camera not available")
+            }
+        }))
+
+        actionSheet.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: { (action:UIAlertAction) in
+            imagePickerController.sourceType = .photoLibrary
+            self.present(imagePickerController, animated: true, completion: nil)
+        }))
+
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+
+        self.present(actionSheet, animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         databaseController = appDelegate.databaseController
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.imageTapped(gesture:)))
-        cardImageView.addGestureRecognizer(tapGesture)
-        cardImageView.isUserInteractionEnabled = true
+        guard let year = card.year, let team = card.team, let playerName = card.player, let cardSet = card.set, let variant = card.variant, let grade = card.grade, let cardNumber = card.number else {
+            return
+        }
+        cardImageView.image = cardImage
+        playerTextField.text = playerName
+        teamTextField.text = team
+        yearTextField.text = year
+        setTextField.text = cardSet
+        variantTextField.text = variant
+        if card.rookie ?? false {
+            rookieSegmentedControl.selectedSegmentIndex = 1
+        }
+        if card.numbered ?? false {
+            numberedSegmentedControl.selectedSegmentIndex = 1
+            numberedTextField.text = cardNumber
+        }
+        if card.auto ?? false {
+            autoSegmentedControl.selectedSegmentIndex = 1
+        }
+        if card.patch ?? false {
+            patchSegmentedControl.selectedSegmentIndex = 1
+        }
+        if card.graded ?? false {
+            gradeSegmentedControl.selectedSegmentIndex = 1
+            gradeTextField.text = grade
+        }
         initTextFieldDelegates()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.title = "Edit Card Details"
         activityIndicator = UIActivityIndicatorView(style: .large)
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
         self.view.addSubview(activityIndicator)
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.title = "Add A Card"
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
-    // MARK: - Gallery Picker Related Functions
-    @objc func imageTapped(gesture: UIGestureRecognizer) {
-        if (gesture.view as? UIImageView) != nil {
-            let imagePickerController = UIImagePickerController()
-            imagePickerController.delegate = self
-
-            let actionSheet = UIAlertController(title: "Photo Source", message: "Choose a source", preferredStyle: .actionSheet)
-
-            actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (action:UIAlertAction) in
-                if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                    imagePickerController.sourceType = .camera
-                    self.present(imagePickerController, animated: true, completion: nil)
-                } else {
-                    print("Camera not available")
-                }
-            }))
-
-            actionSheet.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: { (action:UIAlertAction) in
-                imagePickerController.sourceType = .photoLibrary
-                self.present(imagePickerController, animated: true, completion: nil)
-            }))
-
-            actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-
-            self.present(actionSheet, animated: true, completion: nil)
-        }
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -162,7 +181,19 @@ class AddCardViewController: UIViewController, UIImagePickerControllerDelegate, 
         picker.dismiss(animated: true, completion: nil)
     }
     
-    // MARK: - TextField and Keyboard Related Functions
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == playerTextField{
+            return !autoCompleteText( in : textField, using: string, suggestionsArray: playerNames)
+        } else if textField == teamTextField {
+            return !autoCompleteText( in : textField, using: string, suggestionsArray: teams)
+        } else if textField == yearTextField {
+            return !autoCompleteText( in : textField, using: string, suggestionsArray: years)
+        } else if textField == setTextField {
+            return !autoCompleteText( in : textField, using: string, suggestionsArray: sets)
+        }
+        return true
+    }
+    
     @objc func keyboardWillShow(notification: NSNotification) {
         guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
             return
@@ -197,34 +228,9 @@ class AddCardViewController: UIViewController, UIImagePickerControllerDelegate, 
         numberedTextField.delegate = self
         numberedTextField.autocapitalizationType = .none
 
-        gradedTextField.delegate = self
-        gradedTextField.autocapitalizationType = .allCharacters
+        gradeTextField.delegate = self
+        gradeTextField.autocapitalizationType = .allCharacters
 
         hideKeyboardWhenTappedAround()
     }
-
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if textField == playerTextField{
-            return !autoCompleteText( in : textField, using: string, suggestionsArray: playerNames)
-        } else if textField == teamTextField {
-            return !autoCompleteText( in : textField, using: string, suggestionsArray: teams)
-        } else if textField == yearTextField {
-            return !autoCompleteText( in : textField, using: string, suggestionsArray: years)
-        } else if textField == setTextField {
-            return !autoCompleteText( in : textField, using: string, suggestionsArray: sets)
-        }
-        return true
-    }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

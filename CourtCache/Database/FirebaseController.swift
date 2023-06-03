@@ -74,7 +74,7 @@ class FirebaseController: NSObject, DatabaseProtocol {
         currentUser = firebaseUser
     }
     
-    func addUserCard(player: String, team: String, year: String, rookie: Bool, set: String, variant: String, numbered: Bool, number: String, auto: Bool, patch: Bool, graded: Bool?, grade: String?, imageData: Data) {
+    func addUserCard(player: String, team: String, year: String, rookie: Bool, set: String, variant: String, numbered: Bool, number: String, auto: Bool, patch: Bool, graded: Bool, grade: String, imageData: Data) {
         
         guard let uid = currentUser?.uid else {
             return
@@ -142,7 +142,14 @@ class FirebaseController: NSObject, DatabaseProtocol {
                     print("Error deleting image: \(error)")
                 }
             }
-            decreaseUserCardCount(card: card)
+            decreaseUserCardCount(card: card) {
+                err in
+                if let err = err {
+                    print("Error updating document in decreaseUserCardCount: \(err)")
+                } else {
+                    print("Document successfully updated in decreaseUserCardCount")
+                }
+            }
         }
     }
     
@@ -227,6 +234,49 @@ class FirebaseController: NSObject, DatabaseProtocol {
         }
     }
     
+    func updateCard(card: Card, player: String, team: String, year: String, rookie: Bool, set: String, variant: String, numbered: Bool, number: String, auto: Bool, patch: Bool, graded: Bool, grade: String) {
+        let docRef = usersRef?.document(currentUser?.uid ?? "").collection("cards").document(card.uniqueID ?? "")
+        docRef?.updateData([
+            "player": player,
+            "team": team,
+            "year": year,
+            "rookie": rookie,
+            "set": set,
+            "variant": variant,
+            "numbered": numbered,
+            "number": number,
+            "auto": auto,
+            "graded": graded,
+            "grade": grade
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+                self.decreaseUserCardCount(card: card) { err in
+                    if let err = err {
+                        print("Error updating document in decreaseUserCardCount: \(err)")
+                    } else {
+                        card.player = player
+                        card.team = team
+                        card.year = year
+                        card.rookie = rookie
+                        card.set = set
+                        card.variant = variant
+                        card.numbered = numbered
+                        card.number = number
+                        card.auto = auto
+                        card.patch = patch
+                        card.graded = graded
+                        card.grade = grade
+                        print("Document successfully updated in decreaseUserCardCount")
+                        self.increaseUserCardCount(card: card)
+                    }
+                }
+            }
+        }
+    }
+    
     func increaseUserCardCount(card: Card) {
         guard let userId = currentUser?.uid else { return }
         let totalCards = (currentUserProfile.totalCards ?? 0) + 1
@@ -261,7 +311,7 @@ class FirebaseController: NSObject, DatabaseProtocol {
         ])
     }
     
-    func decreaseUserCardCount(card: Card) {
+    func decreaseUserCardCount(card: Card, completion: @escaping (Error?) -> Void) {
         guard let userId = currentUser?.uid else { return }
         let totalCards = (currentUserProfile.totalCards ?? 0) - 1
         var rookies: Int = 0
@@ -292,31 +342,8 @@ class FirebaseController: NSObject, DatabaseProtocol {
             "rookies": rookies,
             "autos": autos,
             "slabs": slabs
-        ])
+        ], completion: completion)
     }
-    
-//    func getUserDetails() {
-//        let userRef = database.collection("users").document(currentUser?.uid ?? "")
-//        userRef.getDocument {
-//            (document, error) in
-//            if let document = document, document.exists {
-//                do {
-//                    let data = try document.data(as: User.self)
-//                    self.currentUserProfile = data
-//                } catch {
-//                    print("Document exist but cannot be parsed into a User")
-//                }
-//            } else {
-//                print("Document does not exist")
-//            }
-//        }
-//        listeners.invoke {
-//            (listener) in
-//            if listener.listenerType == ListenerType.user || listener.listenerType == ListenerType.all {
-//                listener.onUserValueChange(change: .update, user: currentUserProfile)
-//            }
-//        }
-//    }
     
     func setUpUserListener() {
         guard let uid = currentUser?.uid else {

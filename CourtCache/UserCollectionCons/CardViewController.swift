@@ -49,7 +49,7 @@ class CardViewController: UIViewController {
         }
         if card.graded == true {
             cardDetailsTextView.text += "\n\nGrade: " + grade
-            lastSoldURL += "+" + grade
+            lastSoldURL += "+" + replaceSpacesWithPlus(in: grade)
         }
         lastSoldURL += "&LH_Complete=1&LH_Sold=1"
     }
@@ -67,14 +67,15 @@ class CardViewController: UIViewController {
         }
     }
     
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "editCardSegue" {
+            let destination = segue.destination as! EditCardViewController
+            destination.card = card
+            destination.cardImage = cardImage
+        }
     }
-    */
 
 }
