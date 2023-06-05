@@ -76,6 +76,7 @@ class EditProfileViewController: UIViewController, UITableViewDataSource, UITabl
         } else {
             cell.detailsLabel.text = userDetail.username
         }
+        cell.selectionStyle = .none
         return cell
     }
     

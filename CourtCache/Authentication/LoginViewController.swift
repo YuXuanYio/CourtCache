@@ -71,6 +71,7 @@ class LoginViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = false
         authHandle = auth.addStateDidChangeListener() {
             (auth, user) in
             guard user != nil else {return}
