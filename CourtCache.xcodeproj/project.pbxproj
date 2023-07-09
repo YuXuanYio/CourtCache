@@ -29,6 +29,11 @@
 		D882274929FD5FCA00698EAE /* TeamsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D882274829FD5FCA00698EAE /* TeamsCollectionViewCell.swift */; };
 		D882274B29FD645600698EAE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D882274A29FD645600698EAE /* GoogleService-Info.plist */; };
 		D89BA76A2A262801008875A4 /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89BA7692A262801008875A4 /* CardViewController.swift */; };
+		D8A8966F2A3FFE7600B726DD /* CourtCacheWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A8966E2A3FFE7600B726DD /* CourtCacheWatchApp.swift */; };
+		D8A896712A3FFE7600B726DD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A896702A3FFE7600B726DD /* ContentView.swift */; };
+		D8A896732A3FFE7800B726DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8A896722A3FFE7800B726DD /* Assets.xcassets */; };
+		D8A896762A3FFE7800B726DD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8A896752A3FFE7800B726DD /* Preview Assets.xcassets */; };
+		D8A896792A3FFE7800B726DD /* CourtCacheWatch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = D8A8966C2A3FFE7600B726DD /* CourtCacheWatch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D8B9DA532A2882BD008BC6A9 /* ProfileImageMetaData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B9DA512A2882BD008BC6A9 /* ProfileImageMetaData+CoreDataClass.swift */; };
 		D8B9DA542A2882BD008BC6A9 /* ProfileImageMetaData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B9DA522A2882BD008BC6A9 /* ProfileImageMetaData+CoreDataProperties.swift */; };
 		D8C2A1712A2A18050021B64A /* AccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C2A1702A2A18050021B64A /* AccountTableViewCell.swift */; };
@@ -44,6 +49,30 @@
 		D8EF79862A24449E006A9D16 /* AddCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8EF79852A24449E006A9D16 /* AddCardViewController.swift */; };
 		D8EF798A2A244608006A9D16 /* UserCollectionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8EF79892A244608006A9D16 /* UserCollectionsTableViewController.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D8A896772A3FFE7800B726DD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D882271C29FCD47700698EAE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D8A8966B2A3FFE7600B726DD;
+			remoteInfo = "CourtCacheWatch Watch App";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D8A8967A2A3FFE7800B726DD /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				D8A896792A3FFE7800B726DD /* CourtCacheWatch Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		D81679492A24800D0005B7CE /* HardCodedDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HardCodedDetails.swift; sourceTree = "<group>"; };
@@ -66,6 +95,11 @@
 		D882274829FD5FCA00698EAE /* TeamsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsCollectionViewCell.swift; sourceTree = "<group>"; };
 		D882274A29FD645600698EAE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D89BA7692A262801008875A4 /* CardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewController.swift; sourceTree = "<group>"; };
+		D8A8966C2A3FFE7600B726DD /* CourtCacheWatch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CourtCacheWatch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8A8966E2A3FFE7600B726DD /* CourtCacheWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourtCacheWatchApp.swift; sourceTree = "<group>"; };
+		D8A896702A3FFE7600B726DD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		D8A896722A3FFE7800B726DD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D8A896752A3FFE7800B726DD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D8B9DA512A2882BD008BC6A9 /* ProfileImageMetaData+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileImageMetaData+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D8B9DA522A2882BD008BC6A9 /* ProfileImageMetaData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileImageMetaData+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D8C2A1702A2A18050021B64A /* AccountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTableViewCell.swift; sourceTree = "<group>"; };
@@ -94,6 +128,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D8A896692A3FFE7600B726DD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -101,6 +142,7 @@
 			isa = PBXGroup;
 			children = (
 				D882272629FCD47700698EAE /* CourtCache */,
+				D8A8966D2A3FFE7600B726DD /* CourtCacheWatch Watch App */,
 				D882272529FCD47700698EAE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -109,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				D882272429FCD47700698EAE /* CourtCache.app */,
+				D8A8966C2A3FFE7600B726DD /* CourtCacheWatch Watch App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -132,6 +175,25 @@
 				D8EF79812A2390B5006A9D16 /* Misc Controllers */,
 			);
 			path = CourtCache;
+			sourceTree = "<group>";
+		};
+		D8A8966D2A3FFE7600B726DD /* CourtCacheWatch Watch App */ = {
+			isa = PBXGroup;
+			children = (
+				D8A8966E2A3FFE7600B726DD /* CourtCacheWatchApp.swift */,
+				D8A896702A3FFE7600B726DD /* ContentView.swift */,
+				D8A896722A3FFE7800B726DD /* Assets.xcassets */,
+				D8A896742A3FFE7800B726DD /* Preview Content */,
+			);
+			path = "CourtCacheWatch Watch App";
+			sourceTree = "<group>";
+		};
+		D8A896742A3FFE7800B726DD /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				D8A896752A3FFE7800B726DD /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		D8CAE9A62A2255190029C9FD /* Database */ = {
@@ -219,10 +281,12 @@
 				D882272029FCD47700698EAE /* Sources */,
 				D882272129FCD47700698EAE /* Frameworks */,
 				D882272229FCD47700698EAE /* Resources */,
+				D8A8967A2A3FFE7800B726DD /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D8A896782A3FFE7800B726DD /* PBXTargetDependency */,
 			);
 			name = CourtCache;
 			packageProductDependencies = (
@@ -233,6 +297,23 @@
 			);
 			productName = CourtCache;
 			productReference = D882272429FCD47700698EAE /* CourtCache.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D8A8966B2A3FFE7600B726DD /* CourtCacheWatch Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D8A8967D2A3FFE7800B726DD /* Build configuration list for PBXNativeTarget "CourtCacheWatch Watch App" */;
+			buildPhases = (
+				D8A896682A3FFE7600B726DD /* Sources */,
+				D8A896692A3FFE7600B726DD /* Frameworks */,
+				D8A8966A2A3FFE7600B726DD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "CourtCacheWatch Watch App";
+			productName = "CourtCacheWatch Watch App";
+			productReference = D8A8966C2A3FFE7600B726DD /* CourtCacheWatch Watch App.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -247,6 +328,9 @@
 				TargetAttributes = {
 					D882272329FCD47700698EAE = {
 						CreatedOnToolsVersion = 14.3;
+					};
+					D8A8966B2A3FFE7600B726DD = {
+						CreatedOnToolsVersion = 14.3.1;
 					};
 				};
 			};
@@ -267,6 +351,7 @@
 			projectRoot = "";
 			targets = (
 				D882272329FCD47700698EAE /* CourtCache */,
+				D8A8966B2A3FFE7600B726DD /* CourtCacheWatch Watch App */,
 			);
 		};
 /* End PBXProject section */
@@ -280,6 +365,15 @@
 				D882274B29FD645600698EAE /* GoogleService-Info.plist in Resources */,
 				D882273129FCD47800698EAE /* Assets.xcassets in Resources */,
 				D882272F29FCD47700698EAE /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8A8966A2A3FFE7600B726DD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8A896762A3FFE7800B726DD /* Preview Assets.xcassets in Resources */,
+				D8A896732A3FFE7800B726DD /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -321,7 +415,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D8A896682A3FFE7600B726DD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8A896712A3FFE7600B726DD /* ContentView.swift in Sources */,
+				D8A8966F2A3FFE7600B726DD /* CourtCacheWatchApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D8A896782A3FFE7800B726DD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D8A8966B2A3FFE7600B726DD /* CourtCacheWatch Watch App */;
+			targetProxy = D8A896772A3FFE7800B726DD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		D882272D29FCD47700698EAE /* Main.storyboard */ = {
@@ -460,6 +571,7 @@
 		D882273929FCD47800698EAE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -492,6 +604,7 @@
 		D882273A29FCD47800698EAE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -521,6 +634,66 @@
 			};
 			name = Release;
 		};
+		D8A8967B2A3FFE7800B726DD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"CourtCacheWatch Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = VYTRK8Y2NU;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = CourtCacheWatch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.YuXuan.CourtCache;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.YuXuan.CourtCache.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 9.4;
+			};
+			name = Debug;
+		};
+		D8A8967C2A3FFE7800B726DD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"CourtCacheWatch Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = VYTRK8Y2NU;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = CourtCacheWatch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.YuXuan.CourtCache;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.YuXuan.CourtCache.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 9.4;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -538,6 +711,15 @@
 			buildConfigurations = (
 				D882273929FCD47800698EAE /* Debug */,
 				D882273A29FCD47800698EAE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D8A8967D2A3FFE7800B726DD /* Build configuration list for PBXNativeTarget "CourtCacheWatch Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D8A8967B2A3FFE7800B726DD /* Debug */,
+				D8A8967C2A3FFE7800B726DD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
