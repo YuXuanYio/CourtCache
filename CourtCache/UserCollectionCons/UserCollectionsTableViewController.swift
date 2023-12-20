@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreData
+import VisionKit
 
 class UserCollectionsTableViewController: UITableViewController, DatabaseListener, UISearchBarDelegate {
 
@@ -20,11 +21,14 @@ class UserCollectionsTableViewController: UITableViewController, DatabaseListene
     var userCollection: [(String, Int, [Card])] = []
     var searchedCollection: [(String, Int, [Card])] = []
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+    var rightBarButtonItem: UIBarButtonItem = UIBarButtonItem()
+    var imageToPass: UIImage? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
         databaseController = appDelegate.databaseController
         let searchController = UISearchController(searchResultsController: nil)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add Card", image: UIImage(systemName: "plus"), primaryAction: nil, menu: getMenu())
         searchController.searchBar.delegate = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search"
@@ -226,6 +230,30 @@ class UserCollectionsTableViewController: UITableViewController, DatabaseListene
             performSegue(withIdentifier: "viewCardSegue", sender: nil)
         }
     }
+    
+    func getMenu() -> UIMenu {
+        let scanCard = UIAction(title: "Scan Card", image: UIImage(systemName: "camera.viewfinder")) {
+            (action) in
+//            self.performSegue(withIdentifier: "scanCardSegue", sender: nil)
+            self.displayScanningController()
+        }
+        let manuallyAddCard = UIAction(title: "Add Card Manually", image: UIImage(systemName: "plus")) {
+            (action) in
+            self.performSegue(withIdentifier: "manuallyAddSegue", sender: nil)
+        }
+        let menu = UIMenu(title: "Adding Options:", options: .displayInline, children: [scanCard, manuallyAddCard])
+        return menu
+    }
+    
+    func displayScanningController() {
+        guard VNDocumentCameraViewController.isSupported else { return }
+
+        let controller = VNDocumentCameraViewController()
+        controller.delegate = self
+
+        present(controller, animated: true)
+    }
+    
 
     // MARK: - Navigation
 
@@ -239,6 +267,25 @@ class UserCollectionsTableViewController: UITableViewController, DatabaseListene
                 destination.cardImage = loadImageDataFromCoreData(filename: card.imagePath ?? "") ?? UIImage()
             }
         }
+        if segue.identifier == "manuallyAddSegue" {
+            let destination = segue.destination as! AddCardViewController
+            destination.passedImage = imageToPass
+        }
     }
+}
 
+
+extension UserCollectionsTableViewController: VNDocumentCameraViewControllerDelegate {
+    func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
+        controller.dismiss(animated: true) {
+            // Proceed to the next view controller (where the card is displayed)
+            self.imageToPass = scan.imageOfPage(at: 0)
+            self.performSegue(withIdentifier: "manuallyAddSegue", sender: nil)
+        }
+    }
+    
+    func documentCameraViewControllerDidCancel(_ controller: VNDocumentCameraViewController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
 }

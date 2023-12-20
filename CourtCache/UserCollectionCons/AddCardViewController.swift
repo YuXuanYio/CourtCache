@@ -16,6 +16,7 @@ class AddCardViewController: UIViewController, UIImagePickerControllerDelegate, 
         return UIApplication.shared.delegate as! AppDelegate
     }()
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+    var passedImage: UIImage? = nil
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var cardImageView: UIImageView!
@@ -105,9 +106,13 @@ class AddCardViewController: UIViewController, UIImagePickerControllerDelegate, 
     override func viewDidLoad() {
         super.viewDidLoad()
         databaseController = appDelegate.databaseController
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.imageTapped(gesture:)))
-        cardImageView.addGestureRecognizer(tapGesture)
-        cardImageView.isUserInteractionEnabled = true
+        if passedImage == nil {
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.imageTapped(gesture:)))
+            cardImageView.addGestureRecognizer(tapGesture)
+            cardImageView.isUserInteractionEnabled = true
+        } else {
+            cardImageView.image = passedImage
+        }
         initTextFieldDelegates()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -117,6 +122,16 @@ class AddCardViewController: UIViewController, UIImagePickerControllerDelegate, 
         self.view.addSubview(activityIndicator)
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Add A Card"
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tabBarController?.tabBar.isHidden = true
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        tabBarController?.tabBar.isHidden = false
     }
     
     deinit {
